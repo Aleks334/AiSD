@@ -30,7 +30,7 @@ def merge(left, right, numOfMerges):
 
     while l < len(left) and r < len(right):
         # sort descending
-        if left[l] > right[r]:
+        if left[l] >= right[r]:
             sortedList.append(left[l])
             l += 1
         else:
