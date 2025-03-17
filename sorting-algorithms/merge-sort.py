@@ -1,4 +1,4 @@
-import sys
+import sys, time
 
 # input
 arrStr = input("Podaj n-elementowy ciąg liczb naturalnych (elementy oddzielone spacjami), n<=10\n")
@@ -44,9 +44,15 @@ def merge(left, right, numOfMerges):
     return sortedList
 
 mergeCount = [0]
+
+startTime = time.time()
 sortedList = mergeSort(unsortedList, mergeCount)
+endTime = time.time()
+
+executionTime = (endTime - startTime) * 1000
 
 # output
-print("Ciąg wejściowy: ", unsortedList, end="\n")
-print("Ciąg wyjściowy: ", sortedList, end="\n")
-print("Liczba scaleń: ", mergeCount[0], end="\n")
+print(f"Execution Time: {executionTime:.3f} ms")
+print(f"Ciąg wejściowy: {unsortedList}", end="\n")
+print(f"Ciąg wyjściowy: {sortedList}", end="\n")
+print(f"Liczba scaleń: {mergeCount[0]}", end="\n")
