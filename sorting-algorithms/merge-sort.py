@@ -1,26 +1,25 @@
 import sys, time
 
-# input
 arrStr = input("Podaj n-elementowy ciąg liczb naturalnych (elementy oddzielone spacjami), n<=10\n")
-unsortedList = list(map(int, arrStr.split()))
+unsortedArr = list(map(int, arrStr.split()))
 
-if len(unsortedList) > 10:
+if len(unsortedArr) > 10:
     print("Ciąg powinien mieć n<=10 elementów!")
     sys.exit(1)
 
-if len(unsortedList) == 0:
+if len(unsortedArr) == 0:
     print("Ciąg ma zero elementów!")
     sys.exit(1)
 
 
-def mergeSort(list, numOfMerges):
-    if len(list) == 1:
-        return list
+def mergeSort(arr, numOfMerges):
+    if len(arr) == 1:
+        return arr
     
-    mid = len(list) // 2
+    mid = len(arr) // 2
  
-    left = list[:mid]
-    right = list[mid:]
+    left = arr[:mid]
+    right = arr[mid:]
 
     return merge(mergeSort(left, numOfMerges), mergeSort(right, numOfMerges), numOfMerges)
 
@@ -46,13 +45,12 @@ def merge(left, right, numOfMerges):
 mergeCount = [0]
 
 startTime = time.time()
-sortedList = mergeSort(unsortedList, mergeCount)
+sortedArr = mergeSort(unsortedArr, mergeCount)
 endTime = time.time()
 
 executionTime = (endTime - startTime) * 1000
 
-# output
 print(f"Execution Time: {executionTime:.3f} ms")
-print(f"Ciąg wejściowy: {unsortedList}", end="\n")
-print(f"Ciąg wyjściowy: {sortedList}", end="\n")
+print(f"Ciąg wejściowy: {unsortedArr}", end="\n")
+print(f"Ciąg wyjściowy: {sortedArr}", end="\n")
 print(f"Liczba scaleń: {mergeCount[0]}", end="\n")
