@@ -13,37 +13,40 @@ if len(unsortedList) == 0:
     sys.exit(1)
 
 
-def mergeSort(list):
+def mergeSort(list, numOfMerges):
     if len(list) == 1:
         return list
     
-    splitIndex = len(list) // 2
+    mid = len(list) // 2
  
-    left = list[:splitIndex]
-    right = list[splitIndex:]
-    return merge(mergeSort(left), mergeSort(right))
+    left = list[:mid]
+    right = list[mid:]
 
-def merge(left,right):
+    return merge(mergeSort(left, numOfMerges), mergeSort(right, numOfMerges), numOfMerges)
+
+def merge(left, right, numOfMerges):
     sortedList = []
-    i = j = 0
+    l,r = 0,0
 
-    while i < len(left) and j < len(right):
+    while l < len(left) and r < len(right):
         # sort descending
-        if left[i] > right[j]:
-            sortedList.append(left[i])
-            i += 1
+        if left[l] > right[r]:
+            sortedList.append(left[l])
+            l += 1
         else:
-            sortedList.append(right[j])
-            j += 1
+            sortedList.append(right[r])
+            r += 1
 
-    sortedList.extend(left[i:])
-    sortedList.extend(right[j:])
+    sortedList.extend(left[l:])
+    sortedList.extend(right[r:])
 
+    numOfMerges[0] += 1
     return sortedList
 
-   
-sortedList = mergeSort(unsortedList)
+mergeCount = [0]
+sortedList = mergeSort(unsortedList, mergeCount)
 
 # output
 print("Ciąg wejściowy: ", unsortedList, end="\n")
 print("Ciąg wyjściowy: ", sortedList, end="\n")
+print("Liczba scaleń: ", mergeCount[0], end="\n")
