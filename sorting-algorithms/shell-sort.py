@@ -11,13 +11,20 @@ if len(array) == 0:
     print("Ciąg ma zero elementów!")
     sys.exit(1)
 
-def shellSort(arr):
-    # Hibbard's sequence
+def hibbardSequence(n):
+    gaps = []
     gap = 1
-    while gap < len(arr):
+
+    while gap < n:
+        gaps.append(gap)
         gap = 2 * gap + 1 
 
-    while gap > 0:
+    return gaps
+
+def shellSort(arr):
+    gaps = hibbardSequence(len(arr))    
+
+    for gap in reversed(gaps):
         for i in range(gap, len(arr)):
             temp = arr[i]
             j = i
@@ -26,9 +33,12 @@ def shellSort(arr):
                 j -= gap
 
             arr[j] = temp
-        gap //= 2
 
-print(f"Ciąg wejściowy: {array}", end="\n")
+        print(f"Wartość przyrostu w iteracji to: {gap}")
+
+
+print(f"Ciąg wejściowy: {array}")
+print("------------------------")
 
 startTime = time.time()
 shellSort(array)
@@ -36,5 +46,6 @@ endTime = time.time()
 
 executionTime = (endTime - startTime) * 1000
 
+print("------------------------")
 print(f"Execution Time: {executionTime:.3f} ms")
-print(f"Ciąg wyjściowy: {array}", end="\n")
+print(f"Ciąg wyjściowy: {array}")
