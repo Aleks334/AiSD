@@ -1,5 +1,6 @@
 import random
 import time
+import matplotlib.pyplot as plt
 
 def generateSeqItemsCount(start, stop, count):
     step = (stop - start) // (count - 1)
@@ -10,11 +11,11 @@ def generateSequences(n, k = 10):
     limit = k * n
 
     sequences = {
-        "random": [random.sample(range(1, limit + 1), n) for _ in range(k)],
-        "ascending": [list(range(1, n + 1)) for _ in range(k)],
-        "descending": [list(range(n, 0, -1)) for _ in range(k)],
-        "A-shaped": [sorted(random.sample(range(1, limit + 1), n//2)) + sorted(random.sample(range(1, limit + 1), n - n//2), reverse=True) for _ in range(k)],
-        "V-shaped": [sorted(random.sample(range(1, limit + 1), n//2), reverse=True) + sorted(random.sample(range(1, limit + 1), n - n//2)) for _ in range(k)]
+        "losowy": [random.sample(range(1, limit + 1), n) for _ in range(k)],
+        "rosnący": [list(range(1, n + 1)) for _ in range(k)],
+        "malejący": [list(range(n, 0, -1)) for _ in range(k)],
+        "A-kształtny": [sorted(random.sample(range(1, limit + 1), n//2)) + sorted(random.sample(range(1, limit + 1), n - n//2), reverse=True) for _ in range(k)],
+        "V-kształtny": [sorted(random.sample(range(1, limit + 1), n//2), reverse=True) + sorted(random.sample(range(1, limit + 1), n - n//2)) for _ in range(k)]
     }
     return sequences
 
@@ -35,6 +36,19 @@ def measureSortTime(sortFn, sequences):
 
     return avgTimes
 
+def drawGraph(seqSizes, data, algorithmName):
+    """ Draws a graph of the dependence of sorting time on data size."""
+    plt.figure(figsize=(10, 6))
+    for seqType, avgTimes in data.items():
+        plt.plot(seqSizes, avgTimes, marker='o', label=seqType)
+    
+    plt.xlabel("Liczba elementów w ciągu")
+    plt.ylabel("Średni czas sortowania (ms)")
+    plt.title(f"Wykres zależności czasu sortowania od wielkości danych dla {algorithmName}")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
 def exampleTest():
     sequencesItemsCount = generateSeqItemsCount(10_000, 50_000, 10)
     sortResults = {}
@@ -45,9 +59,10 @@ def exampleTest():
 
     for n in sequencesItemsCount:
         sequences = generateSequences(n)
-        avgTimes = measureSortTime(sorted, sequences) # built-in python sort function
+        avgTimes = measureSortTime(sorted, sequences) # built-in python sort fn
 
         for seqType in sortResults:
             sortResults[seqType].append(avgTimes[seqType])
 
     print(sortResults)
+    drawGraph(sequencesItemsCount, sortResults, "sorted")
