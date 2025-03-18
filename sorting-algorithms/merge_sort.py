@@ -50,7 +50,7 @@ endTime = time.time()
 
 executionTime = (endTime - startTime) * 1000
 
-print(f"Execution Time: {executionTime:.3f} ms")
+print(f"Czas wykonania: {executionTime:.3f} ms")
 print(f"Ciąg wejściowy: {unsortedArr}")
 print(f"Ciąg wyjściowy: {sortedArr}")
 print(f"Liczba scaleń: {mergeCount[0]}")
