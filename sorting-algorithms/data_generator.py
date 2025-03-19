@@ -49,8 +49,8 @@ def drawGraph(seqSizes, data, algorithmName):
     plt.grid()
     plt.show()
 
-def exampleTest():
-    sequencesItemsCount = generateSeqItemsCount(10_000, 50_000, 10)
+def defaultTest(algorithmName, sortFn):
+    sequencesItemsCount = generateSeqItemsCount(5000, 25_000, 10)
     sortResults = {}
 
     # results dict setup
@@ -59,10 +59,28 @@ def exampleTest():
 
     for n in sequencesItemsCount:
         sequences = generateSequences(n)
-        avgTimes = measureSortTime(sorted, sequences) # built-in python sort fn
+        avgTimes = measureSortTime(sortFn, sequences)
 
         for seqType in sortResults:
             sortResults[seqType].append(avgTimes[seqType])
 
     print(sortResults)
-    drawGraph(sequencesItemsCount, sortResults, "sorted")
+    drawGraph(sequencesItemsCount, sortResults, algorithmName)
+
+def smallTest(algorithmName, sortFn):
+    sequencesItemsCount = generateSeqItemsCount(500, 5000, 10)
+    sortResults = {}
+
+    # results dict setup
+    for seqType in generateSequences(0).keys():
+        sortResults[seqType] = []
+
+    for n in sequencesItemsCount:
+        sequences = generateSequences(n)
+        avgTimes = measureSortTime(sortFn, sequences)
+
+        for seqType in sortResults:
+            sortResults[seqType].append(avgTimes[seqType])
+
+    print(sortResults)
+    drawGraph(sequencesItemsCount, sortResults, algorithmName)

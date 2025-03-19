@@ -1,15 +1,5 @@
 import sys, time
-
-arrStr = input("Podaj n-elementowy ciąg liczb naturalnych (elementy oddzielone spacjami), n<=10\n")
-array = list(map(int, arrStr.split()))
-
-if len(array) > 10:
-    print("Ciąg powinien mieć n<=10 elementów!")
-    sys.exit(1)
-
-if len(array) == 0:
-    print("Ciąg ma zero elementów!")
-    sys.exit(1)
+import data_generator as gen
 
 def hibbardSequence(n):
     gaps = []
@@ -36,16 +26,41 @@ def shellSort(arr):
 
         print(f"Wartość przyrostu w iteracji to: {gap}")
 
+def main():
+    arrStr = input("Podaj n-elementowy ciąg liczb naturalnych (elementy oddzielone spacjami), n<=10\n")
+    array = list(map(int, arrStr.split()))
 
-print(f"Ciąg wejściowy: {array}")
-print("------------------------")
+    if len(array) > 10:
+        print("Ciąg powinien mieć n<=10 elementów!")
+        sys.exit(1)
 
-startTime = time.time()
-shellSort(array)
-endTime = time.time()
+    if len(array) == 0:
+        print("Ciąg ma zero elementów!")
+        sys.exit(1)
 
-executionTime = (endTime - startTime) * 1000
+    print(f"Ciąg wejściowy: {array}")
+    print("------------------------")
 
-print("------------------------")
-print(f"Czas wykonania: {executionTime:.3f} ms")
-print(f"Ciąg wyjściowy: {array}")
+    startTime = time.time()
+    shellSort(array)
+    endTime = time.time()
+
+    executionTime = (endTime - startTime) * 1000
+
+    print("------------------------")
+    print(f"Czas wykonania: {executionTime:.3f} ms")
+    print(f"Ciąg wyjściowy: {array}")
+
+def test():
+    gen.defaultTest("shell stort", shellSort)
+
+
+print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")
+code = int(input())
+
+if code == 1:
+    main()
+elif code == 2:
+    test()
+else:
+    print("Podano nieprawidłową liczbę.")

@@ -1,18 +1,9 @@
 import sys, time
+import data_generator as gen
 
-arrStr = input("Podaj n-elementowy ciąg liczb naturalnych (elementy oddzielone spacjami), n<=10\n")
-unsortedArr = list(map(int, arrStr.split()))
+mergeCount = 0 # global
 
-if len(unsortedArr) > 10:
-    print("Ciąg powinien mieć n<=10 elementów!")
-    sys.exit(1)
-
-if len(unsortedArr) == 0:
-    print("Ciąg ma zero elementów!")
-    sys.exit(1)
-
-
-def mergeSort(arr, numOfMerges):
+def mergeSort(arr):
     if len(arr) == 1:
         return arr
     
@@ -21,9 +12,10 @@ def mergeSort(arr, numOfMerges):
     left = arr[:mid]
     right = arr[mid:]
 
-    return merge(mergeSort(left, numOfMerges), mergeSort(right, numOfMerges), numOfMerges)
+    return merge(mergeSort(left), mergeSort(right))
 
-def merge(left, right, numOfMerges):
+def merge(left, right):
+    global mergeCount
     sortedList = []
     l,r = 0,0
 
@@ -39,18 +31,43 @@ def merge(left, right, numOfMerges):
     sortedList.extend(left[l:])
     sortedList.extend(right[r:])
 
-    numOfMerges[0] += 1
+    mergeCount += 1
     return sortedList
 
-mergeCount = [0]
+def main():
+    arrStr = input("Podaj n-elementowy ciąg liczb naturalnych (elementy oddzielone spacjami), n<=10\n")
+    unsortedArr = list(map(int, arrStr.split()))
 
-startTime = time.time()
-sortedArr = mergeSort(unsortedArr, mergeCount)
-endTime = time.time()
+    if len(unsortedArr) > 10:
+        print("Ciąg powinien mieć n<=10 elementów!")
+        sys.exit(1)
 
-executionTime = (endTime - startTime) * 1000
+    if len(unsortedArr) == 0:
+        print("Ciąg ma zero elementów!")
+        sys.exit(1)
 
-print(f"Czas wykonania: {executionTime:.3f} ms")
-print(f"Ciąg wejściowy: {unsortedArr}")
-print(f"Ciąg wyjściowy: {sortedArr}")
-print(f"Liczba scaleń: {mergeCount[0]}")
+    startTime = time.time()
+    sortedArr = mergeSort(unsortedArr)
+    endTime = time.time()
+
+    executionTime = (endTime - startTime) * 1000
+
+    print(f"Czas wykonania: {executionTime:.3f} ms")
+    print(f"Ciąg wejściowy: {unsortedArr}")
+    print(f"Ciąg wyjściowy: {sortedArr}")
+    print(f"Liczba scaleń: {mergeCount}")
+
+def test():
+    gen.defaultTest("merge sort", mergeSort)
+    print(f"Liczba scaleń: {mergeCount}")
+
+
+print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")
+code = int(input())
+
+if code == 1:
+    main()
+elif code == 2:
+    test()
+else:
+    print("Podano nieprawidłową liczbę.")

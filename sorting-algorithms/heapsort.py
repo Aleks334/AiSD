@@ -1,19 +1,5 @@
-tab = []
-print("Ile liczb chcesz wprowadzić: ")
-x = int(input())
-if x < 0:
-    x = 0
-elif x>10:
-    x = 10
-if x == 0:
-    print("Work in progress")
-    # tu generator
-else:
-    #tu normalny kod do wprowadzania
-    while x>0:
-        a = int(input())
-        tab.append(a)
-        x=x-1
+import data_generator as gen
+
 def stosowanie(tab, n, pointer):
     son1 = pointer * 2 + 1 
     son2 = pointer * 2 + 2
@@ -28,6 +14,7 @@ def stosowanie(tab, n, pointer):
         tab[pointer] = tmp1
         tab[sprawdz] = tmp2
         stosowanie(tab, n, sprawdz)
+
 def kopcowanie(tab):
     n = len(tab)
     pointer = len(tab) // 2 - 1
@@ -42,5 +29,23 @@ def kopcowanie(tab):
         tab[0] = tmp3
         stosowanie(tab, a, 0)
         a = a - 1
+
+tab = []
+print("Ile liczb chcesz wprowadzić: ")
+x = int(input())
+if x < 0:
+    x = 0
+elif x>10:
+    x = 10
+
+if x == 0:
+    gen.defaultTest("heap sort", kopcowanie)
+else:
+    #tu normalny kod do wprowadzania
+    while x>0:
+        a = int(input())
+        tab.append(a)
+        x=x-1
+        
 kopcowanie(tab)
-print(tab)
+print(list(reversed(tab)))

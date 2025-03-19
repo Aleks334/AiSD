@@ -1,21 +1,9 @@
+import data_generator as gen
+
 tab = []
 print("Ile liczb chcesz wprowadzić: ")
 x = int(input())
-if x < 0:
-    x = 0
-elif x>10:
-    x = 10
-if x == 0:
-    print("Work in progress")
-    # tu generator
-else:
-    #tu normalny kod do wprowadzania
-    while x>0:
-        a = int(input())
-        tab.append(a)
-        x=x-1
-p = 0
-r = len(tab)-1
+
 def podzial(tab, p, r):
     pivot = tab[r]
     i = p
@@ -43,5 +31,29 @@ def sortowanie(tab, p, r):
             q = podzial(tab, p, r)
             stos.append((p, q))
             stos.append((q+1, r))
+
+def quickSortIteracyjny(arr):
+    p = 0
+    r = len(arr) - 1
+
+    sortowanie(arr, p, r)
+
+if x < 0:
+    x = 0
+elif x>10:
+    x = 10
+if x == 0:
+    gen.smallTest("quick sort iteracyjny", quickSortIteracyjny)
+else:
+    #tu normalny kod do wprowadzania
+    while x>0:
+        a = int(input())
+        tab.append(a)
+        x=x-1
+
+p = 0
+r = len(tab)-1
+
+
 sortowanie(tab, p, r)
-print(tab)
+print(list(reversed(tab)))
