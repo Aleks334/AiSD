@@ -52,7 +52,7 @@ def main():
     print(f"Ciąg wyjściowy: {array}")
 
 def test():
-    gen.defaultTest("shell stort", shellSort)
+    gen.defaultTest("shell stort", shellSort, False, 5000, 25_000)
 
 
 print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")

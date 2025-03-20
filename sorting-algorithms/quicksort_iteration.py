@@ -43,7 +43,7 @@ if x < 0:
 elif x>10:
     x = 10
 if x == 0:
-    gen.smallTest("quick sort iteracyjny", quickSortIteracyjny)
+    gen.defaultTest("quick sort iteracyjny", quickSortIteracyjny, False, 500, 5000)
 else:
     #tu normalny kod do wprowadzania
     while x>0:

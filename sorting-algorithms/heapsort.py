@@ -39,7 +39,7 @@ elif x>10:
     x = 10
 
 if x == 0:
-    gen.defaultTest("heap sort", kopcowanie)
+    gen.defaultTest("heap sort", kopcowanie, False, 5000, 25_000)
 else:
     #tu normalny kod do wprowadzania
     while x>0:

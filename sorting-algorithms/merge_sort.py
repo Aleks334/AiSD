@@ -58,7 +58,7 @@ def main():
     print(f"Liczba scaleń: {mergeCount}")
 
 def test():
-    gen.defaultTest("merge sort", mergeSort)
+    gen.defaultTest("merge sort", mergeSort, False, 5000, 25_000)
     print(f"Liczba scaleń: {mergeCount}")
 
 
