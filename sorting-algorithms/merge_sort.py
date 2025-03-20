@@ -61,13 +61,13 @@ def test():
     gen.defaultTest("merge sort", mergeSort, False, 5000, 25_000)
     print(f"Liczba scaleń: {mergeCount}")
 
+if __name__ == "__main__":
+    print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")
+    code = int(input())
 
-print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")
-code = int(input())
-
-if code == 1:
-    main()
-elif code == 2:
-    test()
-else:
-    print("Podano nieprawidłową liczbę.")
+    if code == 1:
+        main()
+    elif code == 2:
+        test()
+    else:
+        print("Podano nieprawidłową liczbę.")

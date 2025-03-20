@@ -2,6 +2,14 @@ import random
 import time
 import matplotlib.pyplot as plt
 
+import os
+
+outputPath = "output"
+
+if not os.path.exists(outputPath):
+    os.makedirs(outputPath)
+
+
 def generateSeqItemsCount(start, stop, count):
     step = (stop - start) // (count - 1)
     return [start + i * step for i in range(count)]
@@ -36,18 +44,19 @@ def measureSortTime(sortFn, sequences):
 
     return avgTimes
 
-def drawGraph(seqSizes, data, algorithmName):
+def plotGraphForAlgorithm(seqSizes, data, algorithmName):
     """ Draws a graph of the dependence of sorting time on data size."""
     plt.figure(figsize=(10, 6))
+
     for seqType, avgTimes in data.items():
         plt.plot(seqSizes, avgTimes, marker='o', label=seqType)
     
+    plt.title(f"Wykres zależności czasu sortowania od wielkości danych dla {algorithmName}")
     plt.xlabel("Liczba elementów w ciągu")
     plt.ylabel("Średni czas sortowania (ms)")
-    plt.title(f"Wykres zależności czasu sortowania od wielkości danych dla {algorithmName}")
     plt.legend()
-    plt.grid()
-    plt.show()
+    plt.grid(True)
+    plt.savefig(f"{outputPath}/{algorithmName.replace(" ", "-")}")
 
 def defaultTest(algorithmName, sortFn, shouldDrawGraph, minN, maxN):
     sequencesItemsCount = generateSeqItemsCount(minN, maxN, 10)
@@ -65,7 +74,21 @@ def defaultTest(algorithmName, sortFn, shouldDrawGraph, minN, maxN):
             sortResults[seqType].append(avgTimes[seqType])
 
     if shouldDrawGraph:
-        print(sortResults)
-        drawGraph(sequencesItemsCount, sortResults, algorithmName)
+        # print(sortResults)
+        plotGraphForAlgorithm(sequencesItemsCount, sortResults, algorithmName)
     
     return (sortResults, sequencesItemsCount)
+
+def plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm):
+    for seqType, algorithms_data in transformedResults.items():
+        plt.figure(figsize=(10, 6))  
+        
+        for algorithm, times in algorithms_data.items():
+            plt.plot(sequenceLengthsByAlgorithm[algorithm], times, marker='o', label=algorithm)
+
+        plt.title(f"Wydajność algorytmów dla typu ciągu - {seqType}")
+        plt.xlabel("Liczba elementów w ciągu")
+        plt.ylabel("Średni czas sortowania (ms)")
+        plt.legend()
+        plt.grid(True)
+        plt.savefig(f"output/{seqType.replace(' ', '-')}")
