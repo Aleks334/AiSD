@@ -6,34 +6,36 @@ from quicksort_recursion import quickSortRekurencyjny
 
 import data_generator as gen
 
-algorithms = {
-    "heap sort": heapSort,
-    "merge sort": mergeSort,
-    "shell sort": shellSort,
-    "quick sort iteracyjny": quickSortIteracyjny,
-    "quick sort rekurencyjny": quickSortRekurencyjny
-}
 
-results = {}
+if __name__ == "__main__":
+    algorithms = {
+        "heap sort": heapSort,
+        "merge sort": mergeSort,
+        "shell sort": shellSort,
+        "quick sort iteracyjny": quickSortIteracyjny,
+        "quick sort rekurencyjny": quickSortRekurencyjny
+    }
 
-for algorithmName, sortFn in algorithms.items():
-    sortResults, seqItemsCount = gen.defaultTest(algorithmName, sortFn, shouldDrawGraph=True, minN=1000, maxN=5000)
-    results[algorithmName] = (sortResults, seqItemsCount)
+    results = {}
 
-transformedResults = {}
-seqTypes = results[0][0].keys()
+    for algorithmName, sortFn in algorithms.items():
+        sortResults, seqItemsCount = gen.defaultTest(algorithmName, sortFn, shouldDrawGraph=True, minN=500, maxN=5000)
+        results[algorithmName] = (sortResults, seqItemsCount)
 
-for algorithm, data in results.items():
-    seqTypes = results[algorithm][0].keys()
-    for seqType in seqTypes:
-        transformedResults[seqType] = {
-            algorithmName: results[algorithmName][0][seqType]
-            for algorithmName in results
-        }
+    transformedResults = {}
+    seqTypes = results["heap sort"][0].keys()
 
-sequenceLengthsByAlgorithm = {}
+    for algorithm, data in results.items():
+        seqTypes = results[algorithm][0].keys()
+        for seqType in seqTypes:
+            transformedResults[seqType] = {
+                algorithmName: results[algorithmName][0][seqType]
+                for algorithmName in results
+            }
 
-for algorithmName, data in results.items():
-    sequenceLengthsByAlgorithm[algorithmName] = data[1]
+    sequenceLengthsByAlgorithm = {}
 
-gen.plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm)
+    for algorithmName, data in results.items():
+        sequenceLengthsByAlgorithm[algorithmName] = data[1]
+
+    gen.plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm)

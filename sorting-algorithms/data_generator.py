@@ -59,8 +59,27 @@ def plotGraphForAlgorithm(seqSizes, data, algorithmName):
     plt.grid(True)
     plt.savefig(f"{outputPath}/{algorithmName.replace(' ', '-')}.png")
 
+def exportResultsToCSV(filename, seqSizes, avgData, stdData):
+    """Exports sorting times and standard deviations to a CSV file."""
+    csvPath = os.path.join(outputPath, f"{filename}.csv")
 
-def defaultTest(algorithmName, sortFn, shouldDrawGraph, minN, maxN):
+    with open(csvPath, mode='w', newline='') as file:
+        writer = csv.writer(file, delimiter=';')
+        writer.writerow(["Sequence Type", "Sequence Size", "Average Time (ms)", "Standard Deviation (ms)", "Standard Deviation (%)"])
+
+        for seqType in avgData.keys():
+            for i, seqSize in enumerate(seqSizes):
+                avgTime = avgData[seqType][i]
+                stdDev = stdData[seqType][i]
+
+                avgTimeStr = f"{avgTime:.6f}".replace('.', ',')
+                stdDevStr = f"{stdDev:.6f}".replace('.', ',')
+                stdDevPercentageStr = round((stdDev / avgTime) * 100, 2)
+
+                writer.writerow([seqType, seqSize, avgTimeStr, stdDevStr, stdDevPercentageStr])
+
+
+def defaultTest(algorithmName, sortFn, shouldDrawGraph, minN, maxN, shouldGenCsv=True):
     sequencesItemsCount = generateSeqItemsCount(minN, maxN, 10)
 
     avgSortResults = {seqType: [] for seqType in generateSequences(0).keys()}
@@ -74,10 +93,13 @@ def defaultTest(algorithmName, sortFn, shouldDrawGraph, minN, maxN):
             avgSortResults[seqType].append(avgTimes[seqType])
             stdDevResults[seqType].append(stdDevs[seqType])
 
+    if shouldGenCsv:
+        exportResultsToCSV(algorithmName.replace(" ", "-"), sequencesItemsCount, avgSortResults, stdDevResults)
+
     if shouldDrawGraph:
         plotGraphForAlgorithm(sequencesItemsCount, avgSortResults, algorithmName)
     
-    return (avgSortResults, sequencesItemsCount, stdDevResults)
+    return (avgSortResults, sequencesItemsCount)
 
 def plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm):
     for seqType, algorithms_data in transformedResults.items():
