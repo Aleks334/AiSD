@@ -12,9 +12,9 @@ def podzial(tab, p, r):
     i = p
     j = r
     while True:
-        while i <= r and tab[i] < pivot:
+        while i <= r and tab[i] > pivot:
             i = i + 1
-        while j >= p and tab[j] > pivot:
+        while j >= p and tab[j] < pivot:
             j = j - 1
         if i <= j:
             tmp1 = tab[i]
@@ -55,4 +55,4 @@ r = len(tab)-1
 
 sortowanie(tab, p, r)
 
-print(list(reversed(tab)))
+print(tab)
