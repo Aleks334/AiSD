@@ -9,9 +9,9 @@ import data_generator as gen
 algorithms = {
     "heap sort": heapSort,
     "merge sort": mergeSort,
-   # "shell sort": shellSort,
-    #"quick sort iteracyjny": quickSortIteracyjny,
-    #"quick sort rekurencyjny": quickSortRekurencyjny
+    "shell sort": shellSort,
+    "quick sort iteracyjny": quickSortIteracyjny,
+    "quick sort rekurencyjny": quickSortRekurencyjny
 }
 
 results = {}

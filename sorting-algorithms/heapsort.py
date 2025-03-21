@@ -48,5 +48,5 @@ if __name__ == "__main__":
             tab.append(a)
             x=x-1
             
-    kopcowanie(tab)
-    print(list(reversed(tab)))
+        kopcowanie(tab)
+        print(list(reversed(tab)))

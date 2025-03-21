@@ -1,14 +1,10 @@
-import random
-import time
+import random, time, os
 import matplotlib.pyplot as plt
-
-import os
 
 outputPath = "output"
 
 if not os.path.exists(outputPath):
     os.makedirs(outputPath)
-
 
 def generateSeqItemsCount(start, stop, count):
     step = (stop - start) // (count - 1)
@@ -29,10 +25,11 @@ def generateSequences(n, k = 10):
 
 def measureSortTime(sortFn, sequences):
     """Measures execution time based on sorting function and dict of k sequences for each seq type. Time is calculated in miliseconds."""
-    totalTime = 0
     avgTimes = {}
 
     for seqType, seqList in sequences.items():
+        totalTime = 0
+
         for seq in seqList:
             startTime = time.time()
             sortFn(seq.copy())
@@ -91,4 +88,4 @@ def plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm):
         plt.ylabel("Średni czas sortowania (ms)")
         plt.legend()
         plt.grid(True)
-        plt.savefig(f"output/{seqType.replace(' ', '-')}")
+        plt.savefig(f"{outputPath}/{seqType.replace(' ', '-')}")
