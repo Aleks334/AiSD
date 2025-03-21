@@ -56,4 +56,4 @@ r = len(tab)-1
 
 
 sortowanie(tab, p, r)
-print(list(reversed(tab)))
+print(tab)
