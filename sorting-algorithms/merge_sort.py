@@ -58,7 +58,7 @@ def main():
     print(f"Liczba scaleń: {mergeCount}")
 
 def test():
-    gen.defaultTest("merge sort", mergeSort, False, 5000, 25_000)
+    gen.defaultTest("merge sort", mergeSort, shouldDrawGraph=False, minN=1000, maxN=10_000)
     print(f"Liczba scaleń: {mergeCount}")
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
+import csv
 import random, time, os
 import matplotlib.pyplot as plt
+import numpy as np
 
 outputPath = "output"
 
@@ -24,25 +26,27 @@ def generateSequences(n, k = 10):
     return sequences
 
 def measureSortTime(sortFn, sequences):
-    """Measures execution time based on sorting function and dict of k sequences for each seq type. Time is calculated in miliseconds."""
+    """Measures execution time based on sorting function and dict of k sequences for each seq type. Time is calculated in milliseconds."""
     avgTimes = {}
+    stdDevs = {}
 
     for seqType, seqList in sequences.items():
-        totalTime = 0
+        times = []
 
         for seq in seqList:
             startTime = time.time()
             sortFn(seq.copy())
             endTime = time.time()
 
-            totalTime += (endTime - startTime) * 1000 # in ms
+            times.append((endTime - startTime) * 1000) # in ms
 
-        avgTimes[seqType] = totalTime / len(seqList)
+        avgTimes[seqType] = np.mean(times)
+        stdDevs[seqType] = np.std(times)
 
-    return avgTimes
+    return avgTimes, stdDevs
 
 def plotGraphForAlgorithm(seqSizes, data, algorithmName):
-    """ Draws a graph of the dependence of sorting time on data size."""
+    """Draws a graph of the dependence of sorting time on data size."""
     plt.figure(figsize=(10, 6))
 
     for seqType, avgTimes in data.items():
@@ -53,28 +57,27 @@ def plotGraphForAlgorithm(seqSizes, data, algorithmName):
     plt.ylabel("Średni czas sortowania (ms)")
     plt.legend()
     plt.grid(True)
-    plt.savefig(f"{outputPath}/{algorithmName.replace(" ", "-")}")
+    plt.savefig(f"{outputPath}/{algorithmName.replace(' ', '-')}.png")
+
 
 def defaultTest(algorithmName, sortFn, shouldDrawGraph, minN, maxN):
     sequencesItemsCount = generateSeqItemsCount(minN, maxN, 10)
-    sortResults = {}
 
-    # results dict setup
-    for seqType in generateSequences(0).keys():
-        sortResults[seqType] = []
+    avgSortResults = {seqType: [] for seqType in generateSequences(0).keys()}
+    stdDevResults = {seqType: [] for seqType in generateSequences(0).keys()}
 
     for n in sequencesItemsCount:
         sequences = generateSequences(n)
-        avgTimes = measureSortTime(sortFn, sequences)
+        avgTimes, stdDevs = measureSortTime(sortFn, sequences)
 
-        for seqType in sortResults:
-            sortResults[seqType].append(avgTimes[seqType])
+        for seqType in avgSortResults:
+            avgSortResults[seqType].append(avgTimes[seqType])
+            stdDevResults[seqType].append(stdDevs[seqType])
 
     if shouldDrawGraph:
-        # print(sortResults)
-        plotGraphForAlgorithm(sequencesItemsCount, sortResults, algorithmName)
+        plotGraphForAlgorithm(sequencesItemsCount, avgSortResults, algorithmName)
     
-    return (sortResults, sequencesItemsCount)
+    return (avgSortResults, sequencesItemsCount, stdDevResults)
 
 def plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm):
     for seqType, algorithms_data in transformedResults.items():

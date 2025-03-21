@@ -46,7 +46,7 @@ if __name__ == "__main__":
     elif x>10:
         x = 10
     if x == 0:
-        gen.defaultTest("quick sort iteracyjny", quickSortIteracyjny, False, 500, 5000)
+        gen.defaultTest("quick sort iteracyjny", quickSortIteracyjny, shouldDrawGraph=False, minN=1000, maxN=10_000)
     else:
         #tu normalny kod do wprowadzania
         while x>0:
