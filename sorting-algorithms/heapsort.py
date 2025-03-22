@@ -4,9 +4,9 @@ def stosowanie(tab, n, pointer):
     son1 = pointer * 2 + 1 
     son2 = pointer * 2 + 2
     sprawdz = pointer
-    if son1<n and tab[son1] > tab[sprawdz]:
+    if son1<n and tab[son1] < tab[sprawdz]:
         sprawdz = son1
-    if son2<n and tab[son2] > tab[sprawdz]:
+    if son2<n and tab[son2] < tab[sprawdz]:
         sprawdz = son2
     if sprawdz != pointer:
         tmp1 = tab[sprawdz]
@@ -49,4 +49,4 @@ if __name__ == "__main__":
             x=x-1
             
         kopcowanie(tab)
-        print(list(reversed(tab)))
+        print(tab)
