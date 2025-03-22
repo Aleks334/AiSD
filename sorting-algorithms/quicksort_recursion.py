@@ -3,10 +3,6 @@ import sys
 
 sys.setrecursionlimit(10_000)
 
-tab = []
-print("Ile liczb chcesz wprowadzić: ")
-x = int(input())
-
 def podzial(tab, p, r):
     pivot = tab[r]
     i = p
@@ -38,21 +34,25 @@ def quickSortRekurencyjny(arr):
 
     sortowanie(arr, p, r)
 
-if x < 0:
-    x = 0
-elif x>10:
-    x = 10
-if x == 0:
-    gen.smallTest("quick sort rekurencyjny", quickSortRekurencyjny)
-else:
-    #tu normalny kod do wprowadzania
-    while x>0:
-        a = int(input())
-        tab.append(a)
-        x=x-1
-p = 0
-r = len(tab)-1
+if __name__ == "__main__":
+    tab = []
+    print("Ile liczb chcesz wprowadzić: ")
+    x = int(input())
 
-sortowanie(tab, p, r)
+    if x < 0:
+        x = 0
+    elif x>10:
+        x = 10
+    if x == 0:
+        gen.defaultTest("quick sort rekurencyjny", quickSortRekurencyjny, shouldDrawGraph=False, minN=500, maxN=5000)
+    else:
+        #tu normalny kod do wprowadzania
+        while x>0:
+            a = int(input())
+            tab.append(a)
+            x=x-1
+    p = 0
+    r = len(tab)-1
 
-print(tab)
+    sortowanie(tab, p, r)
+    print(tab)

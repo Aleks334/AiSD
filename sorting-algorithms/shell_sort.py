@@ -52,15 +52,15 @@ def main():
     print(f"Ciąg wyjściowy: {array}")
 
 def test():
-    gen.defaultTest("shell stort", shellSort)
+    gen.defaultTest("shell stort", shellSort, False, shouldDrawGraph=False, minN=500, maxN=5000)
 
+if __name__ == "__main__":
+    print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")
+    code = int(input())
 
-print("1 - wpisz dane ręcznie, 2 - uruchom test z wygenerowanymi danymi")
-code = int(input())
-
-if code == 1:
-    main()
-elif code == 2:
-    test()
-else:
-    print("Podano nieprawidłową liczbę.")
+    if code == 1:
+        main()
+    elif code == 2:
+        test()
+    else:
+        print("Podano nieprawidłową liczbę.")

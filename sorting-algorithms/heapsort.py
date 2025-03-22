@@ -30,22 +30,23 @@ def kopcowanie(tab):
         stosowanie(tab, a, 0)
         a = a - 1
 
-tab = []
-print("Ile liczb chcesz wprowadzić: ")
-x = int(input())
-if x < 0:
-    x = 0
-elif x>10:
-    x = 10
+if __name__ == "__main__":
+    tab = []
+    print("Ile liczb chcesz wprowadzić: ")
+    x = int(input())
+    if x < 0:
+        x = 0
+    elif x>10:
+        x = 10
 
-if x == 0:
-    gen.defaultTest("heap sort", kopcowanie)
-else:
-    #tu normalny kod do wprowadzania
-    while x>0:
-        a = int(input())
-        tab.append(a)
-        x=x-1
-        
-kopcowanie(tab)
-print(tab)
+    if x == 0:
+        gen.defaultTest("heap sort", kopcowanie, shouldDrawGraph=False, minN=500, maxN=5000)
+    else:
+        #tu normalny kod do wprowadzania
+        while x>0:
+            a = int(input())
+            tab.append(a)
+            x=x-1
+            
+        kopcowanie(tab)
+        print(tab)
