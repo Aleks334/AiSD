@@ -6,19 +6,31 @@ class Node:
         self.left: Node | None = None
         self.right: Node | None = None
 
-# example bin tree for tests
-root = Node(50)
-root.left = Node(30)
-root.right = Node(70)
-root.left.left = Node(20)
-root.left.right = Node(40)
-root.right.left = Node(60)
-root.right.right = Node(80)
-root.right.right.right = Node(90)
+# example BST tree for tests
+bst_root = Node(50)
+bst_root.left = Node(30)
+bst_root.right = Node(70)
+bst_root.left.left = Node(20)
+bst_root.left.right = Node(40)
+bst_root.right.left = Node(60)
+bst_root.right.right = Node(80)
+bst_root.right.right.right = Node(90)
+
+# example binary tree for tests
+bin_root = Node(4)
+bin_root.left = Node(2)
+bin_root.right = Node(8)
+bin_root.left.left = Node(1)
+bin_root.left.right = Node(3)
+bin_root.right.left = Node(6)
+bin_root.right.right = Node(9)
+bin_root.right.left.left = Node(5)
+bin_root.right.left.right = Node(7)
+
 
 def get_min_key(root: Node | list[int]) -> tuple[int, list[int]]:
     """
-        Returns min key for BST, AVL or Hmin tree.\n
+        Computes min key in BST, AVL or Hmin tree.\n
         **Input:** root node or list of keys (Hmin). **Output:** min key, path to that key.
     """
     min = 0
@@ -38,7 +50,7 @@ def get_min_key(root: Node | list[int]) -> tuple[int, list[int]]:
 
 def get_max_key(root: Node | list[int]) -> tuple[int, list[int]]:
     """
-        Returns max key for BST, AVL or Hmin tree. \n
+        Computes max key in BST, AVL or Hmin tree. \n
         **Input:** root node or list of keys (Hmin). **Output:** max key, path to that key.
     """
     visitedNodes: list[int]= [] 
@@ -63,7 +75,7 @@ def get_max_key(root: Node | list[int]) -> tuple[int, list[int]]:
 
 def lvl_order_iteration(root: Node, searchedKey: int) -> tuple[int, list[int]]:
     """
-        Returns lvl of searched key for BST, AVL or Hmin tree and all keys on that level. \n
+        Computes lvl of searched key for BST, AVL or Hmin tree and all keys on that level. \n
         If desired key is not found then returns (-1, []).  \n
         **Input:** root node, searched key. **Output:** lvl of that key, keys on that lvl.
     """
@@ -97,3 +109,15 @@ def lvl_order_iteration(root: Node, searchedKey: int) -> tuple[int, list[int]]:
         currLvl += 1
 
     return (-1, [])
+
+def reverse_in_order(root: Node):
+    """
+        Prints all keys of BST, AVL tree in descending order using in-order traversing method (reversed).\n
+        **Input:** root node of the tree. **Output:** None.
+    """
+    if not root:
+        return
+
+    reverse_in_order(root.right)
+    print(root.key)
+    reverse_in_order(root.left)
