@@ -27,14 +27,22 @@ bin_root.right.right = Node(9)
 bin_root.right.left.left = Node(5)
 bin_root.right.left.right = Node(7)
 
+# example min heap tree for tests
+hmin_root = Node(1)
+hmin_root.left = Node(3)
+hmin_root.right = Node(5)
+hmin_root.left.left = Node(7)
+hmin_root.left.right = Node(9)
+hmin_root.right.left = Node(11)
+hmin_root.right.right = Node(13)
 
-def get_min_key(root: Node | list[int]) -> tuple[int, list[int]]:
+def min_key(root: Node | list[int]) -> tuple[int, list[int]]:
     """
         Computes min key in BST, AVL or Hmin tree.\n
         **Input:** root node or list of keys (Hmin). **Output:** min key, path to that key.
     """
     min = 0
-    visitedNodes: list[int]= [] 
+    path: list[int]= [] 
     currNode: Node = root
 
     # min heap is stored in a list
@@ -42,42 +50,56 @@ def get_min_key(root: Node | list[int]) -> tuple[int, list[int]]:
          return (root[0], root[0])
 
     while currNode:
-        visitedNodes.append(currNode.key)
+        path.append(currNode.key)
         min = currNode.key
         currNode = currNode.left
     
-    return (min, visitedNodes)
+    return (min, path)
 
-def get_max_key(root: Node | list[int]) -> tuple[int, list[int]]:
+def max_key_bst(root: Node) -> tuple[int, list[int]]:
     """
-        Computes max key in BST, AVL or Hmin tree. \n
+        Computes max key in BST, AVL. \n
         **Input:** root node or list of keys (Hmin). **Output:** max key, path to that key.
     """
-    visitedNodes: list[int]= [] 
+    path: list[int]= [] 
     max = 0
     currNode: Node = root
-    
-    if isinstance(root, list):  # min heap is stored in a list
-         n = len(root)
-        
-         for i in range(n // 2, n): # checks only leaf nodes
-             visitedNodes.append(root[i])
-             if max < root[i]: 
-                 max = root[i]
-         return (max, visitedNodes) # BUG: lists leaf nodes not path to max key
 
     while currNode:
-        visitedNodes.append(currNode.key)
+        path.append(currNode.key)
         max = currNode.key
         currNode = currNode.right
     
-    return (max, visitedNodes)
+    return (max, path)
+
+def max_key_hmin(root: Node) -> tuple[int, list[int]]:
+    """
+        Calculates max key in min heap that is presented as complete binary tree structure.\n
+        **Input:** root node of Hmin. **Output:** max key, path to it
+    """ 
+    max = root.key
+    path = []
+    queue = deque([(root, [])]) # queue element as (curr node, path to it)
+
+    while queue:
+        node, path = queue.pop()
+        path.append(node.key)
+
+        if node.key > max:
+            max, path = node.key, path.copy()
+
+        if node.left:
+            queue.appendleft((node.left, path.copy()))
+        if node.right:
+            queue.appendleft((node.right, path.copy()))
+    
+    return (max, path)
 
 def lvl_order_iteration(root: Node, searchedKey: int) -> tuple[int, list[int]]:
     """
-        Computes lvl of searched key for BST, AVL or Hmin tree and all keys on that level. \n
+        Computes lvl of searched key for BST, AVL or Hmin tree and all keys on that level.\n
         If desired key is not found then returns (-1, []).  \n
-        **Input:** root node, searched key. **Output:** lvl of that key, keys on that lvl.
+        **Input:** root node, desired key. **Output:** lvl of that key, keys on that lvl.
     """
     if not root:
         return (-1, [])
@@ -123,12 +145,10 @@ def reverse_in_order(root: Node):
     reverse_in_order(root.left)
 
 
-# ----------------------------------------------------------------------
-
-def getNode(root: Node, key: int) -> Node | None:
+def get_node_bst(root: Node, key: int) -> Node | None:
     """
-        Tries to find node for given key in the BST tree.\n
-        **Input:** root of the tree, searched key. **Output:** node for key in tree if exists
+        Attempts to find a node for given key in the BST (AVL) tree.\n
+        **Input:** root of the tree, searched key. **Output:** node for key in tree or None if it doesn't exist
     """
     if not root:
         return None
@@ -137,19 +157,30 @@ def getNode(root: Node, key: int) -> Node | None:
         return root
     
     if key < root.key:
-        return getNode(root.left, key)
+        return get_node_bst(root.left, key)
     else:
-        return getNode(root.right, key)
-
-
-def task_4(root: Node, subTreeRootKey: int):
-
-    subTreeRoot: Node | None = None
-    subTreeRoot = getNode(root, subTreeRootKey)
-    pre_order(subTreeRoot)
-    h = bin_tree_height(subTreeRoot)
-    print(f"height: {h}")
-    remove_post_order(subTreeRoot)
+        return get_node_bst(root.right, key)
+    
+def get_node_hmin(root: Node, key: int) -> Node | None:
+     """
+        Attempts to find a node for given key in min heap (binary tree) using iterative BFS.\n
+        **Input:** root of the tree, searched key. **Output:** node for key in tree or None if it doesn't exist
+     """
+     if not root:
+         return None
+     
+     queue = deque([root])
+     while queue:
+         node = queue.pop()
+         if node.key == key:
+             return node
+         
+         if node.left:
+             queue.appendleft(node.left)
+         if node.right:
+             queue.appendleft(node.right)
+    
+     return None
 
 def pre_order(root: Node):
     if not root:
@@ -162,8 +193,8 @@ def pre_order(root: Node):
 
 def bin_tree_height(root: Node) -> int:
     """
-        Gets height of binary tree.\n
-        **Input:** root node. **Output:** height of tree or -1 if given node doesn't exist.
+        Computes height of binary tree (BST, AVL, Hmin).\n
+        **Input:** root node. **Output:** height of tree or -1 if given root doesn't exist.
     """
     if not root:
         return -1
@@ -182,3 +213,11 @@ def remove_post_order(root: Node):
 
     del root
     return None
+
+def task_4(root: Node, subTreeRootKey: int):
+    subTreeRoot: Node | None = None
+    subTreeRoot = get_node_bst(root, subTreeRootKey)
+    pre_order(subTreeRoot)
+    h = bin_tree_height(subTreeRoot)
+    print(f"height: {h}")
+    remove_post_order(subTreeRoot)
