@@ -64,7 +64,7 @@ def get_max_key(root: Node | list[int]) -> tuple[int, list[int]]:
              visitedNodes.append(root[i])
              if max < root[i]: 
                  max = root[i]
-         return (max, visitedNodes)
+         return (max, visitedNodes) # BUG: lists leaf nodes not path to max key
 
     while currNode:
         visitedNodes.append(currNode.key)
@@ -121,3 +121,64 @@ def reverse_in_order(root: Node):
     reverse_in_order(root.right)
     print(root.key)
     reverse_in_order(root.left)
+
+
+# ----------------------------------------------------------------------
+
+def getNode(root: Node, key: int) -> Node | None:
+    """
+        Tries to find node for given key in the BST tree.\n
+        **Input:** root of the tree, searched key. **Output:** node for key in tree if exists
+    """
+    if not root:
+        return None
+    
+    if root.key == key:
+        return root
+    
+    if key < root.key:
+        return getNode(root.left, key)
+    else:
+        return getNode(root.right, key)
+
+
+def task_4(root: Node, subTreeRootKey: int):
+
+    subTreeRoot: Node | None = None
+    subTreeRoot = getNode(root, subTreeRootKey)
+    pre_order(subTreeRoot)
+    h = bin_tree_height(subTreeRoot)
+    print(f"height: {h}")
+    remove_post_order(subTreeRoot)
+
+def pre_order(root: Node):
+    if not root:
+        return
+
+    print(root.key)
+    pre_order(root.left)
+    pre_order(root.right)
+    return
+
+def bin_tree_height(root: Node) -> int:
+    """
+        Gets height of binary tree.\n
+        **Input:** root node. **Output:** height of tree or -1 if given node doesn't exist.
+    """
+    if not root:
+        return -1
+    
+    leftH = bin_tree_height(root.left)
+    rightH = bin_tree_height(root.right)
+
+    return max(leftH, rightH) + 1
+
+def remove_post_order(root: Node):
+    if not root:
+        return None
+    
+    root.left = remove_post_order(root.left)
+    root.right = remove_post_order(root.right)
+
+    del root
+    return None
