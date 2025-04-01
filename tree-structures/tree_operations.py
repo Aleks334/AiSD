@@ -17,7 +17,10 @@ root.right.right = Node(80)
 root.right.right.right = Node(90)
 
 def get_min_key(root: Node | list[int]) -> tuple[int, list[int]]:
-    """Returns min key for BST, AVL or Hmin tree. Input: root node or list of keys (Hmin). Output: (min key, path to that key)"""
+    """
+        Returns min key for BST, AVL or Hmin tree.\n
+        **Input:** root node or list of keys (Hmin). **Output:** min key, path to that key.
+    """
     min = 0
     visitedNodes: list[int]= [] 
     currNode: Node = root
@@ -26,11 +29,9 @@ def get_min_key(root: Node | list[int]) -> tuple[int, list[int]]:
     if isinstance(root, list):
          return (root[0], root[0])
 
-    while currNode is not None:
+    while currNode:
         visitedNodes.append(currNode.key)
-        if min > currNode.key:
-            min = currNode.key
-
+        min = currNode.key
         currNode = currNode.left
     
     return (min, visitedNodes)
@@ -53,11 +54,9 @@ def get_max_key(root: Node | list[int]) -> tuple[int, list[int]]:
                  max = root[i]
          return (max, visitedNodes)
 
-    while currNode is not None:
+    while currNode:
         visitedNodes.append(currNode.key)
-        if max < currNode.key: 
-            max = currNode.key
-
+        max = currNode.key
         currNode = currNode.right
     
     return (max, visitedNodes)
@@ -68,7 +67,7 @@ def lvl_order_iteration(root: Node, searchedKey: int) -> tuple[int, list[int]]:
         If desired key is not found then returns (-1, []).  \n
         **Input:** root node, searched key. **Output:** lvl of that key, keys on that lvl.
     """
-    if root is None:
+    if not root:
         return (-1, [])
 
     queue = deque[Node]()
