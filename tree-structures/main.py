@@ -42,8 +42,8 @@ def menu():
                 print("-" * 20)
                 print(f"Results for {tree_type}:")
                 if option == "1":
-                    time1, (min, path1) = measure_execution_time(min_key_bst if tree_type == "BST" else min_key_hmin, root)
-                    time2, (max, path2) = measure_execution_time(max_key_bst if tree_type == "BST" else max_key_hmin, root)
+                    time1, (min, path1) = measure_execution_time(min_key_bst if tree_type == "BST" or tree_type == "AVL" else min_key_hmin, root)
+                    time2, (max, path2) = measure_execution_time(max_key_bst if tree_type == "BST" or tree_type == "AVL" else max_key_hmin, root)
                     
                     print(f"Minimum key: {min}\nSearch path: {path1}\nExecution time: {time1} ms")
                     print(f"Maximum key: {max}\nSearch path: {path2}\nExecution time: {time2} ms")
@@ -65,7 +65,7 @@ def menu():
                 
                 elif option == "4":
                     key = int(input("Enter subtree root key: "))
-                    subtree_root = get_node_bst(root, key) if tree_type == "BST" else get_node_hmin(root, key)
+                    subtree_root = get_node_bst(root, key) if tree_type == "BST" or tree_type == "AVL" else get_node_hmin(root, key)
                     if subtree_root:
                         print("Pre-order traversal:")
                         time, _ = measure_execution_time(pre_order, subtree_root)

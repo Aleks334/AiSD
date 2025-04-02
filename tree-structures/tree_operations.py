@@ -10,10 +10,6 @@ def min_key_bst(root: Node) -> tuple[int, list[int]]:
     path: list[int]= [] 
     currNode: Node = root
 
-    # min heap is stored in a list
-    if isinstance(root, list):
-         return (root[0], root[0])
-
     while currNode:
         path.append(currNode.key)
         min = currNode.key
@@ -23,7 +19,7 @@ def min_key_bst(root: Node) -> tuple[int, list[int]]:
 
 def min_key_hmin(root: Node) -> tuple[int, list[int]]:
      # minimum key of min heap is the root key
-     return (root.key, root.key)
+     return (root.key, [root.key])
 
 def max_key_bst(root: Node) -> tuple[int, list[int]]:
     """
