@@ -1,10 +1,10 @@
 from collections import deque
 from bst import Node
 
-def min_key(root: Node | list[int]) -> tuple[int, list[int]]:
+def min_key_bst(root: Node) -> tuple[int, list[int]]:
     """
-        Computes min key in BST, AVL or Hmin tree.\n
-        **Input:** root node or list of keys (Hmin). **Output:** min key, path to that key.
+        Computes min key in BST (AVL) tree.\n
+        **Input:** root node. **Output:** min key, path to that key.
     """
     min = 0
     path: list[int]= [] 
@@ -20,6 +20,10 @@ def min_key(root: Node | list[int]) -> tuple[int, list[int]]:
         currNode = currNode.left
     
     return (min, path)
+
+def min_key_hmin(root: Node) -> tuple[int, list[int]]:
+     # minimum key of min heap is the root key
+     return (root.key, root.key)
 
 def max_key_bst(root: Node) -> tuple[int, list[int]]:
     """

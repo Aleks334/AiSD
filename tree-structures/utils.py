@@ -6,8 +6,8 @@ class Node:
         self.left = None
         self.right = None
 
-def load_numbers_from_file(filename: str) -> list[int]:
-    with open(filename, 'r') as file:
+def load_seq_from_file(filepath: str) -> list[int]:
+    with open(filepath, 'r') as file:
         return list(map(int, file.read().split()))
     
 def measure_execution_time(func, *args):

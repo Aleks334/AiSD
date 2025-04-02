@@ -30,6 +30,18 @@ def kopcowanie(tab):
         stosowanie(tab, a, 0)
         a = a - 1
 
+class MinHeap:
+    def __init__(self):
+        self.root = None
+
+    @staticmethod
+    def list_to_tree(array):
+        heap = MinHeap()
+        if array:
+            array_copy = array.copy()
+            kopcowanie(array_copy)
+            heap.root = array_to_heap(array_copy)
+        return heap
 
 def array_to_heap(tab):
     def create_nodes(tab, pointer):
