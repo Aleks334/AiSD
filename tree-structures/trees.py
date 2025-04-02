@@ -1,6 +1,6 @@
 from bst import Drzewo as BST
 from avl import Drzewo as AVL, budowanie
-from heap import MinHeap, kopcowanie, array_to_heap
+from heap import MinHeap
 
 def create_bst(sequence):
     bst = BST()
@@ -10,8 +10,7 @@ def create_bst(sequence):
 
 def create_avl(sequence):
     avl = AVL()
-    sorted_seq = sorted(sequence)
-    avl.root = budowanie(sorted_seq)
+    avl.root = budowanie(sequence)
     return avl
 
 def create_heap(sequence):

@@ -1,17 +1,19 @@
 from utils import Node
 
-tabwejscie = [10, 5, 15, 3, 7, 12, 18]
-sortowana = sorted(tabwejscie)
+tabwejscie = [15, 7, 23, 3, 11, 19, 29, 1, 5, 9, 13, 17, 21, 27, 31]
 
 class Drzewo:
   def __init__(self):
     self.root = None
+
 def budowanie(tab):
   if tab:
-    mid = len(tab) // 2
-    root = Node(tab[mid])
-    root.left = budowanie(tab[:mid])
-    root.right = budowanie(tab[mid+1:])
+    ascTab = sorted(tab)
+    mid = len(ascTab) // 2
+    root = Node(ascTab[mid])
+    root.left = budowanie(ascTab[:mid])
+    root.right = budowanie(ascTab[mid+1:])
     return root
+  
 drzewo = Drzewo()
-drzewo.root = budowanie(sortowana)
+drzewo.root = budowanie(tabwejscie)
