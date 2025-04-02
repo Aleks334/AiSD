@@ -1,5 +1,6 @@
 from collections import deque
 from bst import Node
+from balans import Drzewo as BalancedTree, Node as BalanceNode
 
 def min_key_bst(root: Node) -> tuple[int, list[int]]:
     """
@@ -179,3 +180,9 @@ def remove_post_order(root: Node):
 
     del root
     return None
+
+def tree_with_balance(sequence: list[int]) -> BalanceNode:
+    balanced_tree = BalancedTree()
+    for item in sequence:
+        balanced_tree.add(item)
+    return balanced_tree.root

@@ -1,5 +1,5 @@
 from data_generator import generate_sequences
-from tree_operations import max_key_bst, max_key_hmin
+from tree_operations import max_key_bst, max_key_hmin, tree_with_balance
 from utils import measure_execution_time
 import trees as t
 
@@ -16,14 +16,15 @@ def test_all_operations(sequence, sequence_type, iteration):
     
     bst_max_time, _ = measure_execution_time(max_key_bst, bst.root)
     avl_max_time, _ = measure_execution_time(max_key_bst, avl.root)
-    heap_max_time, _ = measure_execution_time(max_key_hmin, heap)
+    heap_max_time, _ = measure_execution_time(max_key_hmin, heap.root)
     
     print("\nMaximum Key Search Times:")
     print(f"BST max search time: {bst_max_time:.6f} ms")
     print(f"AVL max search time: {avl_max_time:.6f} ms")
     print(f"Min Heap max search time: {heap_max_time:.6f} ms")
 
-    # TODO: Implement tests for balancing BSTs
+    balance_time, _ = measure_execution_time(tree_with_balance, sequence)
+    print(f"BST balancing time: {balance_time:.6f} ms")
     
 
 def run_all_tests(k=20):

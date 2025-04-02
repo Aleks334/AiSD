@@ -2,7 +2,7 @@ from tests import run_all_tests
 from utils import load_seq_from_file, measure_execution_time
 from data_generator import generate_sequences
 import trees as t
-from tree_operations import bin_tree_height, get_node_bst, get_node_hmin, max_key_bst, lvl_order_iteration, max_key_hmin, min_key_bst, min_key_hmin, pre_order, remove_post_order, reverse_in_order
+from tree_operations import bin_tree_height, get_node_bst, get_node_hmin, max_key_bst, lvl_order_iteration, max_key_hmin, min_key_bst, min_key_hmin, pre_order, remove_post_order, reverse_in_order, tree_with_balance
 
 def menu():
     while True:
@@ -11,14 +11,15 @@ def menu():
         print("2. Find level with given key and print all keys on that level")
         print("3. Print all tree keys in descending order")
         print("4. Print subtree in pre-order for given root, its height. Delete it (post-order)")
-        print("5. Run tests")
-        print("6. Exit")
+        print("5. Balance BST")
+        print("6. Run tests")
+        print("7. Exit")
 
         option = input("Choose option: ")
 
-        if option == "6":
+        if option == "7":
             break
-        elif option == "5":
+        elif option == "6":
             run_all_tests()
 
         elif option in ["1", "2", "3", "4"]:
@@ -79,6 +80,27 @@ def menu():
                     else:
                         print("Key not found")
 
+        elif option == "5":
+            input_type = input("Choose data source (1: file, 2: generator): ")
+            sequence: list[int] = []
+
+            if input_type == "1":
+                filepath = "tree-structures/file.txt"
+                sequence = load_seq_from_file(filepath)
+            else:
+                k = int(input("Enter the upper bound of sequence length. (n: <10,k>): "))
+                sequence = generate_sequences(k)["random"][0]
+
+            bst = t.create_bst(sequence)
+            print("\nBST before balancing (pre-order):")
+            pre_order(bst.root)
+            print()
+
+            balance_time, balanced_bst = measure_execution_time(tree_with_balance, sequence)
+            print(f"\nBST after balancing (pre-order):")
+            pre_order(balanced_bst)
+            print()
+            print(f"\nBST balancing time: {balance_time:.6f} ms")
         else:
             print("Niewłaściwy wybór. Spróbuj ponownie")
 
