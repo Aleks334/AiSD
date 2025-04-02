@@ -1,16 +1,24 @@
 import random
 
-def generateSeqItemsCount(start, stop, count):
-    step = (stop - start) // (count - 1)
-    return [start + i * step for i in range(count)]
-
-
-def generateSequences(n, k = 10):
-    """For each sequence type, it generates k n-element integer sequences in the interval <1,k*n>"""
-    limit = k * n
-
-    sequences = {
-        "random": [random.sample(range(1, limit + 1), n) for _ in range(k)],
-        "ascending": [list(range(1, n + 1)) for _ in range(k)],
+def generate_sequences(k, lower_bound=1, upper_bound=100):
+    sequences_dict = {
+        'random': [],
+        'ascending': []
     }
-    return sequences
+
+    for _ in range(random.randint(10, 15)):
+        n = random.randint(10, k)
+
+        random_sequence = [random.randint(lower_bound, upper_bound) for _ in range(n)]
+        sequences_dict['random'].append(random_sequence)
+
+        sorted_sequence = sorted(random_sequence)
+        sequences_dict['ascending'].append(sorted_sequence)
+
+    return sequences_dict
+
+
+if __name__ == "__main__":
+    k = 20
+    sequences = generate_sequences(k)
+    print(sequences)

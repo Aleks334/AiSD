@@ -1,10 +1,5 @@
 from collections import deque
-
-class Node: 
-    def __init__(self, key: int):
-        self.key: int = key
-        self.left: Node | None = None
-        self.right: Node | None = None
+from bst import Node
 
 def min_key(root: Node | list[int]) -> tuple[int, list[int]]:
     """
@@ -111,7 +106,7 @@ def reverse_in_order(root: Node):
         return
 
     reverse_in_order(root.right)
-    print(root.key)
+    print(root.key, end=" ")
     reverse_in_order(root.left)
 
 # TODO: function for printing descending keys of min heap
@@ -157,7 +152,7 @@ def pre_order(root: Node):
     if not root:
         return
 
-    print(root.key)
+    print(root.key, end=" ")
     pre_order(root.left)
     pre_order(root.right)
     return
@@ -184,11 +179,3 @@ def remove_post_order(root: Node):
 
     del root
     return None
-
-def task_4(root: Node, subTreeRootKey: int):
-    subTreeRoot: Node | None = None
-    subTreeRoot = get_node_bst(root, subTreeRootKey)
-    pre_order(subTreeRoot)
-    h = bin_tree_height(subTreeRoot)
-    print(f"height: {h}")
-    remove_post_order(subTreeRoot)

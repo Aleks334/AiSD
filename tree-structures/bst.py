@@ -1,31 +1,29 @@
+from utils import Node
+
 tabwejscie = [10, 5, 15, 3, 7, 12, 18]
-class Node:
-    def __init__(self, data):
-      self.data=data
-      self.left=None
-      self.right=None
+
 class Drzewo:
   def __init__(self):
     self.root=None
-  def insert(self, data):
+  def insert(self, key):
     if self.root is None:
-      self.root=Node(data)
-      print("Root: " + str(self.root.data))
+      self.root=Node(key)
+     # print("Root: " + str(self.root.key))
     else:
-      self._insert_costam(data, self.root)
-  def _insert_costam(self, data, node):
-    if data<node.data:
+      self._insert_costam(key, self.root)
+  def _insert_costam(self, key, node):
+    if key<node.key:
       if node.left is None:
-        node.left=Node(data)
-        print("Od " + str(node.data) + " lewy: " + str(node.left.data))
+        node.left=Node(key)
+     #   print("Od " + str(node.key) + " lewy: " + str(node.left.key))
       else:
-        self._insert_costam(data, node.left)
+        self._insert_costam(key, node.left)
     else:
       if node.right is None:
-        node.right=Node(data)
-        print("Od " + str(node.data) + " prawy: " + str(node.right.data))
+        node.right=Node(key)
+      #  print("Od " + str(node.key) + " prawy: " + str(node.right.key))
       else:
-        self._insert_costam(data, node.right)
+        self._insert_costam(key, node.right)
 drzewo = Drzewo()
 x = 0
 while x<len(tabwejscie):
