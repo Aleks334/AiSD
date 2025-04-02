@@ -6,36 +6,6 @@ class Node:
         self.left: Node | None = None
         self.right: Node | None = None
 
-# example BST tree for tests
-bst_root = Node(50)
-bst_root.left = Node(30)
-bst_root.right = Node(70)
-bst_root.left.left = Node(20)
-bst_root.left.right = Node(40)
-bst_root.right.left = Node(60)
-bst_root.right.right = Node(80)
-bst_root.right.right.right = Node(90)
-
-# example binary tree for tests
-bin_root = Node(4)
-bin_root.left = Node(2)
-bin_root.right = Node(8)
-bin_root.left.left = Node(1)
-bin_root.left.right = Node(3)
-bin_root.right.left = Node(6)
-bin_root.right.right = Node(9)
-bin_root.right.left.left = Node(5)
-bin_root.right.left.right = Node(7)
-
-# example min heap tree for tests
-hmin_root = Node(1)
-hmin_root.left = Node(3)
-hmin_root.right = Node(5)
-hmin_root.left.left = Node(7)
-hmin_root.left.right = Node(9)
-hmin_root.right.left = Node(11)
-hmin_root.right.right = Node(13)
-
 def min_key(root: Node | list[int]) -> tuple[int, list[int]]:
     """
         Computes min key in BST, AVL or Hmin tree.\n
@@ -144,6 +114,7 @@ def reverse_in_order(root: Node):
     print(root.key)
     reverse_in_order(root.left)
 
+# TODO: function for printing descending keys of min heap
 
 def get_node_bst(root: Node, key: int) -> Node | None:
     """

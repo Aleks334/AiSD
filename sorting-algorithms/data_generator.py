@@ -3,7 +3,7 @@ import random, time, os
 import matplotlib.pyplot as plt
 import numpy as np
 
-outputPath = "output"
+outputPath = "sorting-algorithms/output"
 
 if not os.path.exists(outputPath):
     os.makedirs(outputPath)
