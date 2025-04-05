@@ -3,10 +3,10 @@ import random, time, os
 import matplotlib.pyplot as plt
 import numpy as np
 
-outputPath = "sorting-algorithms/output"
+OUTPUT_PATH = "sorting-algorithms/output"
 
-if not os.path.exists(outputPath):
-    os.makedirs(outputPath)
+if not os.path.exists(OUTPUT_PATH):
+    os.makedirs(OUTPUT_PATH)
 
 def generateSeqItemsCount(start, stop, count):
     step = (stop - start) // (count - 1)
@@ -57,11 +57,11 @@ def plotGraphForAlgorithm(seqSizes, data, algorithmName):
     plt.ylabel("Średni czas sortowania (ms)")
     plt.legend()
     plt.grid(True)
-    plt.savefig(f"{outputPath}/{algorithmName.replace(' ', '-')}.png")
+    plt.savefig(f"{OUTPUT_PATH}/{algorithmName.replace(' ', '-')}.png")
 
 def exportResultsToCSV(filename, seqSizes, avgData, stdData):
     """Exports sorting times and standard deviations to a CSV file."""
-    csvPath = os.path.join(outputPath, f"{filename}.csv")
+    csvPath = os.path.join(OUTPUT_PATH, f"{filename}.csv")
 
     with open(csvPath, mode='w', newline='') as file:
         writer = csv.writer(file, delimiter=';')
@@ -113,4 +113,4 @@ def plotGraphsForSeqType(transformedResults, sequenceLengthsByAlgorithm):
         plt.ylabel("Średni czas sortowania (ms)")
         plt.legend()
         plt.grid(True)
-        plt.savefig(f"{outputPath}/{seqType.replace(' ', '-')}")
+        plt.savefig(f"{OUTPUT_PATH}/{seqType.replace(' ', '-')}")
