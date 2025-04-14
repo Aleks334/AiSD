@@ -56,7 +56,7 @@ class KahnEdgesList:
             independentV = self.find_independent_vertex(curr_graph)
 
             if not independentV:
-                print("independent vertex doesn't exist!")
+                print("Can't find next independent vertex which means that graph has a cycle. Sorting topologically is impossible.")
                 return []
 
             if isinstance(independentV, tuple):
@@ -112,7 +112,7 @@ class KahnSuccessorList:
             independentV = self.find_independent_vertex(curr_graph)
 
             if not independentV:
-                print("independent vertex doesn't exist!")
+                print("Can't find next independent vertex which means that graph has a cycle. Sorting topologically is impossible.")
                 return []
 
             result.append(independentV)
@@ -175,7 +175,7 @@ class KahnAdjacencyMatrix:
             independentV = self.find_independent_vertex(curr_graph)
 
             if not independentV:
-                print("independent vertex doesn't exist!")
+                print("Can't find next independent vertex which means that graph has a cycle. Sorting topologically is impossible.")
                 return []
 
             result.append(independentV)
@@ -183,9 +183,10 @@ class KahnAdjacencyMatrix:
 
         return result
 
-
 if __name__ == "__main__":
     adjacency_matrix = get_adjacency_matrix(edgesList, initVerticesNum)
     kahn = KahnAdjacencyMatrix(adjacency_matrix)
     sorted_graph = kahn.sort()
-    print(f"Graph: {edgesList} \ntopologically sorted using Kahn's algorithm: {sorted_graph}")
+
+    if sorted_graph:
+        print(f"Graph: {edgesList} \ntopologically sorted using Kahn's algorithm: {sorted_graph}")
