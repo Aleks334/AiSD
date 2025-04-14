@@ -1,8 +1,8 @@
-from graph_representations import get_successor_list
+from graph_representations import get_successor_list, get_adjacency_matrix
 
 # input
 initVerticesNum, initEdgesNum = list(map(int, input().split()))
-edgesList = [] # list of edges in graph
+edgesList = []
 
 for i in range(initEdgesNum):
     v,e = map(int, input().split())
@@ -57,6 +57,7 @@ class KahnEdgesList:
 
             if not independentV:
                 print("independent vertex doesn't exist!")
+                return []
 
             if isinstance(independentV, tuple):
                 result.extend(independentV)
@@ -72,7 +73,7 @@ class KahnSuccessorList:
         self.graph = successors_dict
 
     def get_all_vertices(self, graph) -> list[int]:
-        """ Retrieves unique vertices from edges in graph. """
+        """ Retrieves unique vertices from successors list in graph. """
         if not graph:
             return []
         
@@ -112,13 +113,79 @@ class KahnSuccessorList:
 
             if not independentV:
                 print("independent vertex doesn't exist!")
+                return []
 
             result.append(independentV)
             curr_graph = self.remove_vertex(curr_graph, independentV)
                         
         return result
 
-successor_list = get_successor_list(edgesList, initVerticesNum)
-kahn = KahnSuccessorList(successor_list)
-sorted_graph = kahn.sort()
-print(f"Graph: {edgesList} \ntopologically sorted using Kahn's algorithm: {sorted_graph}")
+class KahnAdjacencyMatrix:
+    def __init__(self, adjacency_matrix):
+        self.graph = adjacency_matrix
+        self.removed_vertices = set()
+
+    def get_all_vertices(self, graph) -> list[int]:
+        """ Retrieves unique vertices from adjacency matrix. """
+        if not graph:
+            return []
+        
+        vertices = []
+        for i, _ in enumerate(graph):
+            if (i + 1) not in self.removed_vertices:
+                vertices.append(i + 1)
+                
+        return vertices
+    
+    def find_independent_vertex(self, graph) -> int | None:
+        """ Returns vertex in graph which has in-deg(v) = 0. """
+        vertices  = self.get_all_vertices(graph)
+        in_deg = { v: 0 for v in vertices }
+
+        for vertex in vertices:
+            for vertices_row in graph:
+                if vertices_row[vertex - 1] == 1:
+                    in_deg[vertex] += 1      
+
+        independentV = None
+        for (v, in_deg_val) in in_deg.items():
+            if in_deg_val == 0:
+                independentV = v
+                break
+
+        return independentV
+    
+    def remove_vertex(self, graph, vertex):
+        """ Removes all edges related to the vertex. """
+        self.removed_vertices.add(vertex)
+        altered_graph = [row[:] for row in graph]
+
+        altered_graph[vertex - 1] = [None] * len(altered_graph)   
+        for row in altered_graph:
+            row[vertex - 1] = None
+
+        return altered_graph
+    
+    def sort(self):
+        """ Kahn's algorithm - topological sorting """
+        result = []
+        curr_graph = [row[:] for row in self.graph]
+
+        while self.get_all_vertices(curr_graph):
+            independentV = self.find_independent_vertex(curr_graph)
+
+            if not independentV:
+                print("independent vertex doesn't exist!")
+                return []
+
+            result.append(independentV)
+            curr_graph = self.remove_vertex(curr_graph, independentV)
+
+        return result
+
+
+if __name__ == "__main__":
+    adjacency_matrix = get_adjacency_matrix(edgesList, initVerticesNum)
+    kahn = KahnAdjacencyMatrix(adjacency_matrix)
+    sorted_graph = kahn.sort()
+    print(f"Graph: {edgesList} \ntopologically sorted using Kahn's algorithm: {sorted_graph}")
