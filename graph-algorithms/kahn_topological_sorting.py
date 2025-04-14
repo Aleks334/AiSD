@@ -1,12 +1,14 @@
+from graph_representations import get_successor_list
+
 # input
 initVerticesNum, initEdgesNum = list(map(int, input().split()))
-initGraph = [] # list of edges in graph
+edgesList = [] # list of edges in graph
 
 for i in range(initEdgesNum):
     v,e = map(int, input().split())
-    initGraph.append((v,e))
+    edgesList.append((v,e))
 
-class KahnEdges:
+class KahnEdgesList:
     def __init__(self, edges):
         self.graph = edges
 
@@ -64,7 +66,59 @@ class KahnEdges:
                 curr_graph = self.remove_vertex(curr_graph, independentV)
                         
         return result
+
+class KahnSuccessorList:
+    def __init__(self, successors_dict):
+        self.graph = successors_dict
+
+    def get_all_vertices(self, graph) -> list[int]:
+        """ Retrieves unique vertices from edges in graph. """
+        if not graph:
+            return []
+        
+        return list(graph.keys())
     
-kahn = KahnEdges(initGraph)
+    def find_independent_vertex(self, graph) -> int | None:
+        """ Returns vertex in graph which has in-degree equal to 0: in-deg(v)=0. """
+        vertices  = self.get_all_vertices(graph)
+        in_deg = { v: 0 for v in vertices }
+
+        for vertex in vertices:
+            for _, successors in graph.items():
+                if vertex in successors:
+                    in_deg[vertex] += 1
+
+        independentV = None
+        for (v, in_deg_val) in in_deg.items():
+            if in_deg_val == 0:
+                independentV = v
+                break
+
+        return independentV
+    
+    def remove_vertex(self, graph, vertex):
+        """ Returns successors for all vertices except for vertex from argument.  """
+        altered_graph = graph.copy()
+        altered_graph.pop(vertex)
+        return altered_graph
+    
+    def sort(self):
+        """ Kahn's algorithm - topological sorting """
+        result = []
+        curr_graph = self.graph.copy()
+
+        while self.get_all_vertices(curr_graph):
+            independentV = self.find_independent_vertex(curr_graph)
+
+            if not independentV:
+                print("independent vertex doesn't exist!")
+
+            result.append(independentV)
+            curr_graph = self.remove_vertex(curr_graph, independentV)
+                        
+        return result
+
+successor_list = get_successor_list(edgesList, initVerticesNum)
+kahn = KahnSuccessorList(successor_list)
 sorted_graph = kahn.sort()
-print(f"Graph: {initGraph} \ntopologically sorted using Kahn's algorithm: {sorted_graph}")
+print(f"Graph: {edgesList} \ntopologically sorted using Kahn's algorithm: {sorted_graph}")
