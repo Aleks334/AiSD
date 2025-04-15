@@ -4,6 +4,7 @@
 macierz = []
 kolor = []
 lista_L = []
+kolor = [0] * len(macierz)
 v = 0 #to jest wierzchołek który teraz będzie sprawdzany 
 # zmienianie kolorów
 def biali_sasiedzi(v):
