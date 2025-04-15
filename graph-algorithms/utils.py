@@ -1,6 +1,6 @@
 import time
 
-def read_graph_from_file(filename):
+def read_graph_from_file(filename="file.txt"):
     edges = []
     num_vertices = 0
     num_edges = 0
@@ -23,8 +23,7 @@ def measure_execution_time(func, *args):
     return (time.time() - start) * 1000, result
 
 if __name__ == "__main__":
-    filename = 'file.txt'
-    num_vertices, num_edges, edges = read_graph_from_file(filename)
+    num_vertices, num_edges, edges = read_graph_from_file()
 
     print(f"Vertices number: {num_vertices}")
     print(f"Edges number: {num_edges}")

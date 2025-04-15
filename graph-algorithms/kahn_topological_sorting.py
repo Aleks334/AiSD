@@ -1,5 +1,3 @@
-from graph_representations import get_successor_list, get_adjacency_matrix
-
 class KahnEdgesList:
     def __init__(self, edges):
         self.graph = edges
@@ -184,8 +182,7 @@ if __name__ == "__main__":
         v,e = map(int, input().split())
         edgesList.append((v,e))
 
-    adjacency_matrix = get_adjacency_matrix(edgesList, initVerticesNum)
-    kahn = KahnAdjacencyMatrix(adjacency_matrix)
+    kahn = KahnEdgesList(edgesList)
     sorted_graph = kahn.sort()
 
     if sorted_graph:
