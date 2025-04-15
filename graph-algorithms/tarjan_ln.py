@@ -1,35 +1,29 @@
-# W = WHITE - 0
-# G = GREY - 1 
-# B = BLACK - 2
-lista = [
-    [1],  # Wierzchołek 0 ma krawędź do 1
-    [2],  # Wierzchołek 1 ma krawędź do 2
-    []    # Wierzchołek 2 nie ma sąsiadów
-]
-kolor = []
-lista_L = []
-kolor = [0] * len(lista)
-v = 0 #to jest wierzchołek który teraz będzie sprawdzany 
-# zmienianie kolorów
-def biali_sasiedzi(v):
-  global lista_L
-  i = 0 
-  kolor[v] = 1
-  while i < len(lista[v]):
-    somsiad = lista[v][i]
-    if kolor[somsiad] == 0:
-        biali_sasiedzi(somsiad)
-    elif kolor[somsiad] == 1:
-        print("Graf nie jest acykliczny")
-        exit()
-    i = i + 1
-  kolor[v] = 2
-  lista_L = [v] + lista_L
-koncowy = v
-while any(k==0 for k in kolor):
-  if kolor[v] == 0:
-      biali_sasiedzi(v)
-  v = v + 1
-  if v == len(lista):
-      v = 0
-print(lista_L)
+class TarjanSuccessorList:
+    def __init__(self, successor_list: dict[int, list[int]]):
+        self.graph = successor_list
+        self.colors = {v: 0 for v in successor_list.keys()}  # White=0, Gray=1, Black=2
+        self.result = []
+
+
+    def dfs(self, v: int) -> bool:
+        self.colors[v] = 1  # Grey
+        
+        for neighbor in self.graph[v]:
+            if self.colors[neighbor] == 0:  # White
+                if not self.dfs(neighbor):
+                    return False
+            elif self.colors[neighbor] == 1:  # Grey
+                print("Cycle detected!")
+                return False
+                
+        self.colors[v] = 2  # Black
+        self.result = [v] + self.result
+        return True
+            
+    def sort(self) -> list[int] | None:
+        for v in self.graph.keys():
+            if self.colors[v] == 0:
+                if not self.dfs(v):
+                    return None
+                        
+        return self.result
