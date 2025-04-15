@@ -12,7 +12,10 @@ def biali_sasiedzi(v):
   kolor[v] = 1
   while i < len(lista[v]):
     if kolor[lista[v][i]] == 0:
-      kolor[lista[v][i]] = 1 
+      kolor[lista[v][i]] = 1
+    elif kolor[lista[v][i]] == 1:
+      print("Graf nie jest acykliczny!")
+      exit()
     i = i + 1
   kolor[v] = 2
   lista_L = [v] + lista_L
