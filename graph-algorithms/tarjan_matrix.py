@@ -14,6 +14,9 @@ def biali_sasiedzi(v):
   while i < len(macierz[v]):
     if macierz[v][i] == 1 and kolor[i] == 0:
         kolor[i] = 1
+    elif macierz[v][i] == 1 and kolor[i] == 1:
+        print("Graf zawiera cykl!")
+        exit()
     i = i + 1
   kolor[v] = 2
   lista_L = [v] + lista_L
@@ -24,4 +27,3 @@ while any(k==0 for k in kolor):
   v = v + 1
   if v == len(macierz):
       v = 0
-  
