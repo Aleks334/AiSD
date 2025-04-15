@@ -5,6 +5,25 @@ from graph_representations import get_successor_list, get_adjacency_matrix
 from tarjan_ln import TarjanSuccessorList
 from tarjan_matrix import TarjanAdjacencyMatrix
 
+def get_start_vertex(num_vertices: int) -> int | None:
+    print("\nChoose start vertex:")
+    print("1. Use vertex with in-deg(v)=0")
+    print("2. Select specific vertex")
+    choice = input("Choose option: ")
+    
+    if choice == "1":
+        return None
+    elif choice == "2":
+        while True:
+            try:
+                v = int(input(f"Enter vertex number (1-{num_vertices}): "))
+                if 1 <= v <= num_vertices:
+                    return v
+                print(f"Vertex must be between 1 and {num_vertices}")
+            except ValueError:
+                print("Please enter a valid number")
+    return None
+
 def menu():
     while True:
         print("\nMenu:")
@@ -58,25 +77,31 @@ def menu():
                 for row in adj_matrix:
                     print(row)
                 print(f"Topological order: {result}")
+
         elif choice == "3":
             successor_list = get_successor_list(edges, num_vertices)
             tarjan = TarjanSuccessorList(successor_list)
-            result = tarjan.sort()
+            start_vertex = get_start_vertex(num_vertices)
+            result = tarjan.sort(start_vertex)
             
             if result:
                 print("\nResults for Tarjan Successor List:")
                 print(f"Successor list: {successor_list}")
+                print(f"Starting vertex: {start_vertex or 'vertex with in-deg(v)=0'}")
                 print(f"Topological order: {result}")
+
         elif choice == "4":
             adj_matrix = get_adjacency_matrix(edges, num_vertices)
             tarjan = TarjanAdjacencyMatrix(adj_matrix)
-            result = tarjan.sort()
+            start_vertex = get_start_vertex(num_vertices)
+            result = tarjan.sort(start_vertex)
             
             if result:
                 print("\nResults for Tarjan Adjacency Matrix:")
                 print("Adjacency matrix:")
                 for row in adj_matrix:
                     print(row)
+                print(f"Starting vertex: {start_vertex or 'vertex with in-deg(v)=0'}")
                 print(f"Topological order: {result}")
 
 if __name__ == "__main__":
