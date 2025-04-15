@@ -8,8 +8,8 @@ def generate_dag(n, saturation=0.5):
     """Generates a DAG with n nodes and edge saturation.
     Returns: num of vertices, num of edges, edge list in (vertices are from 1)."""
     
-    # number of arcs (edges) in full directed graph
-    edges_num = n * (n - 1)
+    # n(n-1) arcs (edges) in full directed graph divided by 2 to avoid cycles.
+    edges_num = n * (n - 1) // 2
     target_edges_num = int(saturation * edges_num)
 
     possible_edges = [(i, j) for i in range(n) for j in range(i+1, n)]
