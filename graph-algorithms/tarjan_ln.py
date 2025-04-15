@@ -1,9 +1,14 @@
 # W = WHITE - 0
 # G = GREY - 1 
 # B = BLACK - 2
-lista = []
+lista = [
+    [1],  # Wierzchołek 0 ma krawędź do 1
+    [2],  # Wierzchołek 1 ma krawędź do 2
+    []    # Wierzchołek 2 nie ma sąsiadów
+]
 kolor = []
 lista_L = []
+kolor = [0] * len(lista)
 v = 0 #to jest wierzchołek który teraz będzie sprawdzany 
 # zmienianie kolorów
 def biali_sasiedzi(v):
@@ -11,11 +16,12 @@ def biali_sasiedzi(v):
   i = 0 
   kolor[v] = 1
   while i < len(lista[v]):
-    if kolor[lista[v][i]] == 0:
-      kolor[lista[v][i]] = 1
-    elif kolor[lista[v][i]] == 1:
-      print("Graf nie jest acykliczny!")
-      exit()
+    somsiad = lista[v][i]
+    if kolor[somsiad] == 0:
+        biali_sasiedzi(somsiad)
+    elif kolor[somsiad] == 1:
+        print("Graf nie jest acykliczny")
+        exit()
     i = i + 1
   kolor[v] = 2
   lista_L = [v] + lista_L
@@ -26,4 +32,4 @@ while any(k==0 for k in kolor):
   v = v + 1
   if v == len(lista):
       v = 0
-  
+print(lista_L)
