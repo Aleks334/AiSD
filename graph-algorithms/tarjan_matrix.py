@@ -1,7 +1,10 @@
 # W = WHITE - 0
 # G = GREY - 1 
 # B = BLACK - 2
-macierz = []
+macierz = [
+    [0, 1, 0],  # Wierzchołek 0 ma krawędź do 1
+    [0, 0, 1],  # Wierzchołek 1 ma krawędź do 2
+    [0, 0, 0]]  # Wierzchołek 2 nie ma sąsiadów]
 kolor = []
 lista_L = []
 kolor = [0] * len(macierz)
@@ -13,7 +16,7 @@ def biali_sasiedzi(v):
   kolor[v] = 1
   while i < len(macierz[v]):
     if macierz[v][i] == 1 and kolor[i] == 0:
-        kolor[i] = 1
+        biali_sasiedzi(i)
     elif macierz[v][i] == 1 and kolor[i] == 1:
         print("Graf zawiera cykl!")
         exit()
@@ -27,3 +30,4 @@ while any(k==0 for k in kolor):
   v = v + 1
   if v == len(macierz):
       v = 0
+print(lista_L)
