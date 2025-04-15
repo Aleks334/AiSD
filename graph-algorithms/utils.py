@@ -26,6 +26,6 @@ if __name__ == "__main__":
     filename = 'file.txt'
     num_vertices, num_edges, edges = read_graph_from_file(filename)
 
-    print(f"Liczba wierzchołków: {num_vertices}")
-    print(f"Liczba krawędzi: {num_edges}")
-    print(f"Krawędzie grafu: {edges}")
+    print(f"Vertices number: {num_vertices}")
+    print(f"Edges number: {num_edges}")
+    print(f"Edges list (directed graph): {edges}")
