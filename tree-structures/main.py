@@ -102,7 +102,7 @@ def menu():
             print()
             print(f"\nBST balancing time: {balance_time:.6f} ms")
         else:
-            print("Niewłaściwy wybór. Spróbuj ponownie")
+            print("Incorrect option. Try again")
 
 
 if __name__ == "__main__":
