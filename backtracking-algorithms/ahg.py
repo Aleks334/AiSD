@@ -10,7 +10,7 @@ def hamilton(G):
     visited[0] = True
     def DFS(u):
         if len(path) == n:
-            return G[u][0] > 0
+            return G[u][path[0]] > 0
         v = 0
         while v<n:
             if G[u][v] > 0 and not visited[v]:
