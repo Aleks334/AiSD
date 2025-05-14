@@ -13,7 +13,7 @@ def read_input():
     return num_vertices, num_edges, edges
 
 
-def is_eulerian_cycle(adj_matrix, n):
+def has_eulerian_cycle(adj_matrix, n):
     for i in range(n):
         degree = sum(adj_matrix[i])
         if degree % 2 != 0:
@@ -91,7 +91,7 @@ def main():
     # for row in adj_matrix:
     #     print(' '.join(map(str, row)))
 
-    if not is_eulerian_cycle(adj_matrix, num_vertices):
+    if not has_eulerian_cycle(adj_matrix, num_vertices):
         print("\nGraph does not have an Euler cycle.")
     else:
         print("\nEuler cycle:")
