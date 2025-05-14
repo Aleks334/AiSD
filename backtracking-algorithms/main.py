@@ -1,12 +1,11 @@
-from euler_cycle_directed_multigraph import fleury_algorithm as fleury_directed
-from euler_cycle_undirected_graph import fleury_algorithm as fleury_undirected
+from euler_cycle_directed_multigraph import fleury_algorithm as fleury_directed, has_eulerian_cycle as has_eulerian_directed, is_strongly_connected
+from euler_cycle_undirected_graph import fleury_algorithm as fleury_undirected, has_eulerian_cycle as has_eulerian_undirected
 from ahg import hamilton as hamilton_directed
 from ahs import hamilton as hamilton_undirected
 from utils import read_graph_from_file, get_adjacency_matrix
 from graph_matrix import get_graph_matrix
 
 def read_input():
-    """Reads graph data from keyboard"""
     print("Enter number of vertices and edges in 1. row, then list of edges:")
     num_vertices, num_edges = map(int, input().split())
     edges = []
@@ -58,27 +57,31 @@ def menu():
         if choice == "1":
             if repr_choice == "1":
                 adj_matrix = get_adjacency_matrix(edges, num_vertices)
-                cycle = fleury_undirected(adj_matrix, num_vertices, 0)
-                if cycle:
+
+                if not has_eulerian_undirected(adj_matrix, num_vertices):
+                    print("\nGraph does not have an Euler cycle.")
+                else:
+                    cycle = fleury_undirected(adj_matrix, num_vertices, 0)
                     print("\nFound Euler cycle:")
                     print(" -> ".join(map(str, cycle)))
-                else:
-                    print("\nNo Euler cycle exists in this graph.")
+
             else:
                 graph_matrix = get_graph_matrix(edges, num_vertices)
-                cycle = fleury_directed(graph_matrix, num_vertices, 0)
-                if cycle:
+
+                if not has_eulerian_directed(graph_matrix, num_vertices) or not is_strongly_connected(graph_matrix, num_vertices):
+                    print("\nGraph does not have an Euler cycle.")
+                else:
+                    cycle = fleury_directed(graph_matrix, num_vertices, 0)
                     print("\nFound Euler cycle:")
                     print(" -> ".join(map(str, cycle)))
-                else:
-                    print("\nNo Euler cycle exists in this graph.")
 
         else:
-            adj_matrix = get_adjacency_matrix(edges, num_vertices)
             if repr_choice == "1":
+                adj_matrix = get_adjacency_matrix(edges, num_vertices)
                 cycle = hamilton_undirected(adj_matrix)
             else:
-                cycle = hamilton_directed(adj_matrix)
+                graph_matrix = get_graph_matrix(edges, num_vertices)
+                cycle = hamilton_directed(graph_matrix)
             
             if cycle:
                 print("\nFound Hamilton cycle:")
