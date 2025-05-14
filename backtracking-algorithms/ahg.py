@@ -1,7 +1,7 @@
-G = []
-with open("graf.txt", "r") as file:
-    for line in file:
-        G.append(list(map(int, line.strip().split())))
+# G = []
+# with open("graf.txt", "r") as file:
+#     for line in file:
+#         G.append(list(map(int, line.strip().split())))
 def hamilton(G):
     n = len(G)
     m = len(G[0])
@@ -26,9 +26,10 @@ def hamilton(G):
         return path + [0]
     else:
         return None
-wynik = hamilton(G)
-if wynik:
-    print("Występuje cykl hamilton:", wynik)
-else:
-    print("Graf nie ma cykly hamilton")
+    
+# wynik = hamilton(G)
+# if wynik:
+#     print("Występuje cykl hamilton:", wynik)
+# else:
+#     print("Graf nie ma cykly hamilton")
 
