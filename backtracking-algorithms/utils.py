@@ -49,13 +49,12 @@ def export_results(results: dict, filename: str):
     
     with open(filepath, 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Vertices', 'Saturation', 'Edges', 'Time (ms)'])
-        
+        writer.writerow(['Vertices', 'Saturation', 'Edges', 'Avg Time (ms)', 'Std Deviation (ms)'])
+         
         for n in results:
             for saturation in results[n]:
-                edges, time = results[n][saturation]
-                writer.writerow([n, saturation, edges, f"{time:.3f}"])
-
+                edges, avg_time, std_dev = results[n][saturation]
+                writer.writerow([n, saturation, edges, f"{avg_time:.3f}", f"{std_dev:.3f}"])
 
 def plot_3d_results(results: dict, title: str, filename: str):
     OUTPUT_DIR = "backtracking-algorithms/output"
@@ -83,3 +82,23 @@ def plot_3d_results(results: dict, title: str, filename: str):
     
     plt.savefig(f'{OUTPUT_DIR}/{filename}.png')
     plt.close()
+
+def calc_algorithm_exec_time(func, args, num_runs=10) -> tuple[list[float], list[float]]:
+    times = []
+    for _ in range(num_runs):
+        time = measure_execution_time(func, *args)
+        times.append(time)
+    return np.mean(times), np.std(times)
+
+def prepare_plot_data(results: dict) -> dict:
+    """
+    Transforms results dictionary to format required by plot_3d_results.
+    Excludes standard deviation.
+    """
+    plot_data = {}
+    for n in results:
+        plot_data[n] = {}
+        for s in results[n]:
+            edges, avg_time, _ = results[n][s]
+            plot_data[n][s] = (edges, avg_time)
+    return plot_data

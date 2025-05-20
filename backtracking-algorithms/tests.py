@@ -1,6 +1,5 @@
-from collections import defaultdict
 import random
-from utils import export_results, get_adjacency_matrix, measure_execution_time, plot_3d_results
+from utils import calc_algorithm_exec_time, export_results, get_adjacency_matrix, plot_3d_results, prepare_plot_data
 from graph_matrix import get_graph_matrix
 from euler_cycle_directed_multigraph import fleury_algorithm as fleury_directed
 from euler_cycle_undirected_graph import fleury_algorithm as fleury_undirected
@@ -57,15 +56,23 @@ def run_tests():
             adj_matrix = get_adjacency_matrix(edges, num_v)
             
             start_vertex = random.randint(0, num_v - 1)
-            euler_time = measure_execution_time(fleury_undirected, adj_matrix, num_v, start_vertex)
-            undirected_euler_results[n][saturation] = (len(edges), euler_time)
+            euler_avg, euler_std = calc_algorithm_exec_time(
+                fleury_undirected, 
+                [adj_matrix, num_v, start_vertex], 
+            )
+            undirected_euler_results[n][saturation] = (len(edges), euler_avg, euler_std)
             
-            hamilton_time = measure_execution_time(hamilton_undirected, adj_matrix)
-            undirected_hamilton_results[n][saturation] = (len(edges), hamilton_time)
+
+            hamilton_avg, hamilton_std = calc_algorithm_exec_time(
+                hamilton_undirected, 
+                [adj_matrix], 
+            )
+            undirected_hamilton_results[n][saturation] = (len(edges), hamilton_avg, hamilton_std)
             
             print(f"Undirected - Vertices: {n}, Saturation: {saturation}%, Edges: {len(edges)}")
-            print(f"Euler time: {euler_time} ms")
-            print(f"Hamilton time: {hamilton_time} ms")
+            print(f"Euler avg time: {euler_avg:.3f} ms (±{euler_std:.3f})")
+            print(f"Hamilton avg time: {hamilton_avg:.3f} ms (±{hamilton_std:.3f})")
+
     
 
     print("\nTesting directed multigraphs...")
@@ -75,15 +82,21 @@ def run_tests():
             graph_matrix = get_graph_matrix(edges, num_v)
             
             start_vertex = random.randint(0, num_v - 1)
-            euler_time = measure_execution_time(fleury_directed, graph_matrix, num_v, start_vertex)
-            directed_euler_results[n][saturation] = (len(edges), euler_time)
+            euler_avg, euler_std = calc_algorithm_exec_time(
+                fleury_directed, 
+                [graph_matrix, num_v, start_vertex], 
+            )
+            directed_euler_results[n][saturation] = (len(edges), euler_avg, euler_std)
             
-            hamilton_time = measure_execution_time(hamilton_directed, graph_matrix)
-            directed_hamilton_results[n][saturation] = (len(edges), hamilton_time)
+            hamilton_avg, hamilton_std = calc_algorithm_exec_time(
+                hamilton_directed, 
+                [graph_matrix], 
+            )
+            directed_hamilton_results[n][saturation] = (len(edges), hamilton_avg, hamilton_std)
             
             print(f"Directed - Vertices: {n}, Saturation: {saturation}%, Edges: {len(edges)}")
-            print(f"Euler time: {euler_time} ms")
-            print(f"Hamilton time: {hamilton_time} ms")
+            print(f"Euler avg time: {euler_avg:.3f} ms (±{euler_std:.3f})")
+            print(f"Hamilton avg time: {hamilton_avg:.3f} ms (±{hamilton_std:.3f})")
     
     
     export_results(undirected_euler_results, "undirected_euler_tests")
@@ -92,25 +105,25 @@ def run_tests():
     export_results(directed_hamilton_results, "directed_hamilton_tests")
 
     plot_3d_results(
-        undirected_hamilton_results, 
+        prepare_plot_data(undirected_hamilton_results), 
         'Hamilton cycle (undirected graph): t=f(n,s)',
         'hamilton_undirected_3d'
     )
     
     plot_3d_results(
-        undirected_euler_results,
+        prepare_plot_data(undirected_euler_results),
         'Euler cycle (undirected graph): t=f(n,s)',
         'fleury_undirected_3d'
     )
 
     plot_3d_results(
-        directed_hamilton_results, 
+        prepare_plot_data(directed_hamilton_results), 
         'Hamilton cycle (directed multigraph): t=f(n,s)',
         'hamilton_directed_3d'
     )
     
     plot_3d_results(
-        directed_euler_results,
+        prepare_plot_data(directed_euler_results),
         'Euler cycle (directed multigraph): t=f(n,s)',
         'fleury_directed_3d'
     )
