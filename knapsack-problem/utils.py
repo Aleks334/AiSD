@@ -2,23 +2,25 @@ DEFAULT_INPUT_FILE_NAME = "dane.txt"
 
 def load_data_from_keyboard():
     try:
-        n = int(input("Podaj liczbę przedmiotów: "))
-        if n <= 0:
-            raise ValueError("Liczba przedmiotów musi być liczbą naturalną.")
+        first_line = input("Podaj liczbę przedmiotów oraz pojemność plecaka (oddzielone spacją): ")
+        n_str, capacity_str = first_line.strip().split()
+        n = int(n_str)
         
-        capacity = int(input("Podaj pojemność plecaka: "))
+        capacity = int(capacity_str)
+        if n <= 0:
+            raise ValueError("Liczba przedmiotów musi być liczbą naturalną większą od 0.")
         if capacity <= 0:
-            raise ValueError("Pojemność musi być liczbą naturalną.")
+            raise ValueError("Pojemność musi być liczbą naturalną większą od 0.")
         
         items = []
         for i in range(n):
-            w = int(input(f"Podaj wagę przedmiotu {i+1}: "))
-            v = int(input(f"Podaj wartość przedmiotu {i+1}: "))
-            if w <= 0 or v <= 0:
-                raise ValueError("Waga i wartość muszą być liczbami naturalnymi.")
-            items.append((w, v))
-            
+            line = input(f"Podaj rozmiar i wartość przedmiotu {i+1} (oddzielone spacją): ")
+            weight, value = map(int, line.strip().split())
+            if weight <= 0 or value <= 0:
+                raise ValueError("Rozmiar i wartość muszą być liczbami naturalnymi większymi od 0.")
+            items.append((weight, value))
         return items, capacity
+    
     except Exception as e:
         print(f"Podano nieprawidłowy format danych: {e}")
         return None, None
@@ -32,25 +34,26 @@ def load_data_from_file(filename=DEFAULT_INPUT_FILE_NAME):
     """
     try:
         with open(filename, "r") as f:
-            n = int(f.readline())
+            first_line = f.readline()
+            n_str, capacity_str = first_line.strip().split()
+            n = int(n_str)
+            capacity = int(capacity_str)
             if n <= 0:
-                raise ValueError("Liczba przedmiotów musi być liczbą naturalną.")
-            
-            capacity = int(f.readline())
+                raise ValueError("Liczba przedmiotów musi być liczbą naturalną większą od 0.")
             if capacity <= 0:
-                raise ValueError("Pojemność musi być liczbą naturalną.")
-            
+                raise ValueError("Pojemność musi być liczbą naturalną większą od 0.")
+
             items = []
-            for i in range(n):
+            for _ in range(n):
                 line = f.readline()
                 if not line:
                     raise ValueError("Brak danych dla wszystkich przedmiotów.")
-                w, v = map(int, line.strip().split())
-                if w <= 0 or v <= 0:
-                    raise ValueError("Waga i wartość muszą być liczbami naturalnymi.")
-                items.append((w, v))
+                weight, value = map(int, line.strip().split())
+                if weight <= 0 or value <= 0:
+                    raise ValueError("Rozmiar i wartość muszą być liczbami naturalnymi większymi od 0.")
+                items.append((weight, value))
             return items, capacity
-        
+
     except Exception as e:
         print(f"Podano nieprawidłowy format danych: {e}")
         return None, None

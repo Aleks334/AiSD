@@ -1,5 +1,3 @@
-from utils import load_data_from_keyboard, load_data_from_file
-
 def knapsack_brute_force(items, capacity):
     n = len(items)
     best_value = 0
@@ -25,34 +23,3 @@ def knapsack_brute_force(items, capacity):
             best_weight = current_weight
 
     return best_combination, best_weight, best_value
-
-def main():
-    print("Wybierz metodę wczytywania danych:")
-    print("1. Z klawiatury")
-    print("2. Z pliku tekstowego")
-
-    choice = input("Wybór (1/2): ")
-
-    items = None
-    capacity = None
-
-    if choice == '1':
-        items, capacity = load_data_from_keyboard()
-    elif choice == '2':
-        items, capacity = load_data_from_file()
-    else:
-        print("Nieprawidłowy wybór.")
-        return
-
-    if items is None or capacity is None:
-        return
-
-    print("\n--- Rozwiązanie algorytmem siłowym ---")
-    selected_items_indices, total_weight, total_value = knapsack_brute_force(items, capacity)
-
-    print(f"Wybrane przedmioty (indeksy): {selected_items_indices}")
-    print(f"Sumaryczny rozmiar: {total_weight}")
-    print(f"Sumaryczna wartość: {total_value}")
-
-if __name__ == "__main__":
-    main()
