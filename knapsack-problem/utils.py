@@ -1,3 +1,6 @@
+import time
+
+
 DEFAULT_INPUT_FILE_NAME = "dane.txt"
 
 def load_data_from_keyboard():
@@ -57,3 +60,13 @@ def load_data_from_file(filename=DEFAULT_INPUT_FILE_NAME):
     except Exception as e:
         print(f"Podano nieprawidłowy format danych: {e}")
         return None, None
+    
+
+def run_with_timer(func, *args):
+    """
+    Measures function execution time in milliseconds.
+    """
+    start_time = time.perf_counter()
+    result = func(*args)
+    execution_time = (time.perf_counter() - start_time) * 1000
+    return result, execution_time
