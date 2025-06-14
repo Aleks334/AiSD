@@ -1,65 +1,57 @@
-waga = []
-wartosc = []
-pojemnosc = 5
-tab = []
-przedmioty = []
-iloscprzedmiotow = 0
-plik = open('dane.txt', 'r')
-wczytywanie = []
-linianr = 0
-for linia in plik:
-    x = linia.split()
-    if linianr == 0:
-        iloscprzedmiotow = int(x[0])
-        pojemnosc = int(x[1])
+from utils import load_data_from_keyboard, load_data_from_file
+
+def knapsack_dynamic(items, capacity):
+    n = len(items)
+    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        w, v = items[i - 1]
+        for c in range(capacity + 1):
+            if w <= c:
+                dp[i][c] = max(dp[i - 1][c], dp[i - 1][c - w] + v)
+            else:
+                dp[i][c] = dp[i - 1][c]
+
+    selected = []
+    c = capacity
+    for i in range(n, 0, -1):
+        if dp[i][c] != dp[i - 1][c]:
+            selected.append(i)
+            c -= items[i - 1][0]
+    selected.reverse()
+    total_weight = sum(items[i - 1][0] for i in selected)
+    total_value = sum(items[i - 1][1] for i in selected)
+
+    return selected, total_weight, total_value
+
+def main():
+    print("Wybierz metodę wczytywania danych:")
+    print("1. Z klawiatury")
+    print("2. Z pliku tekstowego")
+
+    choice = input("Wybór (1/2): ")
+
+    items = None
+    capacity = None
+
+    if choice == '1':
+        items, capacity = load_data_from_keyboard()
+    elif choice == '2':
+        items, capacity = load_data_from_file()
     else:
-        waga.append(int(x[0]))
-        wartosc.append(int(x[1]))
-    linianr = linianr + 1
-plik.close()
-n = 0
-while n <= len(waga):
-    i = 0
-    tmp = []
-    while i <= pojemnosc:
-        tmp.append(0)
-        i = i + 1
-    tab.append(tmp)
-    n = n + 1
-i = 1
-while i <= len(waga):
-    j = 0
-    while j <= pojemnosc:
-        tab[i][j] = tab[i-1][j]
-        if waga[i-1] <= j:
-            tab[i][j] = max(
-                tab[i][j],
-                tab[i-1][j - waga[i-1]] + wartosc[i-1]
-            )
-        j = j + 1
-    i = i + 1
-i = len(waga)
-j = pojemnosc
-while i > 0 and j > 0:
-    if tab[i][j] != tab[i-1][j]:
-        przedmioty.append(i-1)
-        j -= waga[i-1]
-    i -= 1
-przedmioty.reverse()
-print("Wybrane przedmioty:", przedmioty)
-i = 0
-wartosctab = []
-wagatab = []
-sumawaga = 0
-sumawartosc = 0
-while i<len(przedmioty):
-    wartosctab.append(wartosc[przedmioty[i]])
-    wagatab.append(waga[przedmioty[i]])
-    sumawartosc = sumawartosc + wartosc[przedmioty[i]]
-    sumawaga = sumawaga + waga[przedmioty[i]]
-    i = i + 1
-print("Wartość: ", wartosctab)
-print("Waga: ", wagatab)
-print("Suma wartość", sumawartosc)
-print("Suma wagi: ", sumawaga)
-print()
+        print("Nieprawidłowy wybór.")
+        return
+
+    if items is None or capacity is None:
+        return
+
+    print("\n--- Rozwiązanie algorytmem dynamicznym ---")
+    selected_items_indices, total_weight, total_value = knapsack_dynamic(items, capacity)
+
+    print(f"Wybrane przedmioty (indeksy): {selected_items_indices}")
+    print(f"Sumaryczny rozmiar: {total_weight}")
+    print(f"Sumaryczna wartość: {total_value}")
+
+
+if __name__ == "__main__":
+    main()
