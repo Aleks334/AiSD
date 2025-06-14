@@ -1,5 +1,6 @@
-def knapsack_brute_force(items, capacity):
+from utils import load_data_from_keyboard, load_data_from_file
 
+def knapsack_brute_force(items, capacity):
     n = len(items)
     best_value = 0
     best_combination = []
@@ -24,53 +25,6 @@ def knapsack_brute_force(items, capacity):
             best_weight = current_weight
 
     return best_combination, best_weight, best_value
-
-def load_data_from_keyboard():
-    while True:
-        try:
-            n_str, b_str = input("Podaj liczbę przedmiotów i pojemność plecaka (oddzielone spacją): ").split()
-            n = int(n_str)
-            b = int(b_str)
-            break
-        except ValueError:
-            print("Nieprawidłowy format.")
-
-    items = []
-    print(f"Podaj rozmiar i wartość dla {n} przedmiotów (np. '3 7'):")
-    for i in range(n):
-        while True:
-            try:
-                r_str, w_str = input(f"Przedmiot {i + 1}: ").split()
-                r = int(r_str)
-                w = int(w_str)
-                items.append((r, w))
-                break
-            except ValueError:
-                print("Nieprawidłowy format.")
-    return items, b
-
-def load_data_from_file(filename="dane.txt"):
-    """
-    Format pliku:
-    pierwszy wiersz: liczba przedmiotów, pojemność plecaka
-    kolejne wiersze: rozmiar przedmiotu, wartość przedmiotu
-    """
-    try:
-        with open(filename, 'r') as f:
-            lines = f.readlines()
-
-        n, b = map(int, lines[0].split())
-        items = []
-        for i in range(1, n + 1):
-            r, w = map(int, lines[i].split())
-            items.append((r, w))
-        return items, b
-    except FileNotFoundError:
-        print(f"Błąd: Plik '{filename}' nie został znaleziony.")
-        return None, None
-    except ValueError:
-        print(f"Błąd: Nieprawidłowy format danych w pliku '{filename}'.")
-        return None, None
 
 def main():
     print("Wybierz metodę wczytywania danych:")
